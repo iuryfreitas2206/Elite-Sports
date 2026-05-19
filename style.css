@@ -1322,3 +1322,155 @@ button:hover {
     font-weight: bold;
     text-align: center;
 }
+
+/* ============================= */
+/* RESPONSIVO - CELULAR/TABLET */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .topo {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .logo {
+        justify-content: center;
+    }
+
+    .logo-img {
+        width: 55px;
+        height: auto;
+    }
+
+    .logo-text {
+        font-size: 22px;
+    }
+
+    .acoes {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .menu {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 12px;
+    }
+
+    .menu a {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .produtos {
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .grid,
+    .grid-produtos,
+    .produtos-grid,
+    .lista-produtos {
+        display: grid;
+        grid-template-columns: 1fr !important;
+        gap: 18px;
+    }
+
+    .card,
+    .produto-card,
+    .card-produto {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .card img,
+    .produto-card img,
+    .card-produto img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .item-carrinho {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .item-carrinho img {
+        width: 120px;
+        height: auto;
+    }
+
+    .item-info {
+        width: 100%;
+    }
+
+    .item-acoes {
+        justify-content: center;
+    }
+
+    .login-container {
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 420px;
+        box-sizing: border-box;
+    }
+
+    .painel-layout {
+        flex-direction: column;
+    }
+
+    .painel-menu {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .painel-conteudo {
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .painel-topo {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .linha-pedido {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .linha-pedido img {
+        width: 100px;
+        height: auto;
+    }
+
+    button {
+        max-width: 100%;
+    }
+}
