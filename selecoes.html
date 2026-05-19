@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Seleções - Elite Sports</title>
+<link rel="stylesheet" href="style.css">
+
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="topo">
+
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+        <img src="./img/logo.png" class="logo-img">
+        <span class="logo-text">Elite <strong>Sports</strong></span>
+    </div>
+
+    <div class="acoes">
+    <span onclick="history.back()">
+        <i class="ri-arrow-left-line"></i> Voltar
+    </span>
+
+    <span onclick="window.location.href='index.html'">
+        <i class="ri-home-line"></i> Início
+    </span>
+
+    <!-- Olá, Usuário com dropdown -->
+    <div class="conta-dropdown">
+    <span id="usuarioLogadoNome" onclick="handleUsuarioClick()">
+        <i class="ri-user-line"></i> <span id="nomeUsuario">Login</span>
+        <i class="ri-arrow-down-s-line" id="setaDropdown" style="display:none"></i>
+    </span>
+
+    <div id="dropdownMenu" class="dropdown-content">
+        <button onclick="mostrarMinhaConta()">Minha Conta</button>
+        <button onclick="mostrarMeusPedidos()">Meus Pedidos</button>
+        <button onclick="sair()">Sair da conta</button>
+    </div>
+</div>
+    <!-- Carrinho sempre por último -->
+    <div class="carrinho" onclick="window.location.href='carrinhos.html'">
+        <i class="ri-shopping-cart-line"></i>
+        <span id="contador">0</span>
+    </div>
+</div>
+
+</header>
+
+<nav class="menu">
+    <a href="index.html" >Início</a>
+    <a href="camisetas.html">Camisetas</a>
+    <a href="shorts.html">Shorts</a>
+    <a href="selecoes.html" class="ativo">Copa do Mundo</a>
+</nav>
+
+<section class="produtos">
+
+    <h2>Copa do Mundo</h2>
+
+    <div class="grid selecoes-grid">
+
+        <!-- BRASIL -->
+        <div class="card" onclick="abrirProduto(101, 'principal')">
+            <img src="./img/selecoes/brasil-1.png">
+            <h3>Camisa Brasil</h3>
+            <p>R$ 129,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(101, 'principal')">Comprar</button>
+        </div>
+
+        <div class="card" onclick="abrirProduto(201, 'principal')">
+            <img src="./img/selecoes/short-brasil-1.png">
+            <h3>Short Brasil</h3>
+            <p>R$ 89,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(201, 'principal')">Comprar</button>
+        </div>
+
+        <!-- FRANÇA -->
+        <div class="card" onclick="abrirProduto(102, 'principal')">
+            <img src="./img/selecoes/franca-1.png">
+            <h3>Camisa França</h3>
+            <p>R$ 129,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(102, 'principal')">Comprar</button>
+        </div>
+
+        <div class="card" onclick="abrirProduto(202, 'principal')">
+            <img src="./img/selecoes/short-franca-1.png">
+            <h3>Short França</h3>
+            <p>R$ 89,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(202, 'principal')">Comprar</button>
+        </div>
+
+        <!-- ARGENTINA -->
+        <div class="card" onclick="abrirProduto(103, 'principal')">
+            <img src="./img/selecoes/argentina-1.png">
+            <h3>Camisa Argentina</h3>
+            <p>R$ 129,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(103, 'principal')">Comprar</button>
+        </div>
+
+        <div class="card" onclick="abrirProduto(203, 'principal')">
+            <img src="./img/selecoes/short-argentina-1.png">
+            <h3>Short Argentina</h3>
+            <p>R$ 89,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(203, 'principal')">Comprar</button>
+        </div>
+
+        <!-- PORTUGAL -->
+        <div class="card" onclick="abrirProduto(104, 'principal')">
+            <img src="./img/selecoes/portugal-1.png">
+            <h3>Camisa Portugal</h3>
+            <p>R$ 129,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(104, 'principal')">Comprar</button>
+        </div>
+
+        <div class="card" onclick="abrirProduto(204, 'principal')">
+            <img src="./img/selecoes/short-portugal-1.png">
+            <h3>Short Portugal</h3>
+            <p>R$ 89,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(204, 'principal')">Comprar</button>
+        </div>
+
+        <!-- ALEMANHA -->
+        <div class="card" onclick="abrirProduto(105, 'principal')">
+            <img src="./img/selecoes/alemanha-1.png">
+            <h3>Camisa Alemanha</h3>
+            <p>R$ 129,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(105, 'principal')">Comprar</button>
+        </div>
+
+        <div class="card" onclick="abrirProduto(205, 'principal')">
+            <img src="./img/selecoes/short-alemanha-1.png">
+            <h3>Short Alemanha</h3>
+            <p>R$ 89,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(205, 'principal')">Comprar</button>
+        </div>
+
+        <!-- ESPANHA -->
+        <div class="card" onclick="abrirProduto(106, 'principal')">
+            <img src="./img/selecoes/espanha-1.png">
+            <h3>Camisa Espanha</h3>
+            <p>R$ 129,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(106, 'principal')">Comprar</button>
+        </div>
+
+        <div class="card" onclick="abrirProduto(206, 'principal')">
+            <img src="./img/selecoes/short-espanha-1.png">
+            <h3>Short Espanha</h3>
+            <p>R$ 89,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(206, 'principal')">Comprar</button>
+        </div>
+
+        <!-- INGLATERRA -->
+        <div class="card" onclick="abrirProduto(107, 'principal')">
+            <img src="./img/selecoes/inglaterra-1.png">
+            <h3>Camisa Inglaterra</h3>
+            <p>R$ 129,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(107, 'principal')">Comprar</button>
+        </div>
+
+        <div class="card" onclick="abrirProduto(207, 'principal')">
+            <img src="./img/selecoes/short-inglaterra-1.png">
+            <h3>Short Inglaterra</h3>
+            <p>R$ 89,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(207, 'principal')">Comprar</button>
+        </div>
+
+        <!-- BÉLGICA -->
+        <div class="card" onclick="abrirProduto(108, 'principal')">
+            <img src="./img/selecoes/belgica-1.png">
+            <h3>Camisa Bélgica</h3>
+            <p>R$ 129,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(108, 'principal')">Comprar</button>
+        </div>
+
+        <div class="card" onclick="abrirProduto(208, 'principal')">
+            <img src="./img/selecoes/short-belgica-1.png">
+            <h3>Short Bélgica</h3>
+            <p>R$ 89,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(208, 'principal')">Comprar</button>
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+function abrirProduto(id, cor) {
+    window.location.href = "produto.html?id=" + id + "&cor=" + cor;
+}
+
+function atualizarContador() {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+    let total = 0;
+
+    carrinho.forEach(p => {
+        total += p.qtd || 1;
+    });
+
+    const contador = document.getElementById("contador");
+
+    if (total > 9) {
+        contador.innerText = "9+";
+    } else {
+        contador.innerText = total;
+    }
+}
+
+atualizarContador();
+
+// Atualiza o header
+function atualizarNomeUsuarioHeader() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null;
+    const nomeEl = document.getElementById("nomeUsuario");
+    const seta = document.getElementById("setaDropdown");
+
+    if(usuario){
+        nomeEl.innerText = usuario.nome;
+        seta.style.display = "inline";
+    } else {
+        nomeEl.innerText = "Login";
+        seta.style.display = "none";
+    }
+}
+
+// Decide o que fazer ao clicar no usuário
+function handleUsuarioClick() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null;
+
+    if(usuario){
+        document.getElementById("dropdownMenu").classList.toggle("show");
+    } else {
+        window.location.href = "Entrar.html"; // leva para login
+    }
+}
+
+// Fecha dropdown clicando fora
+window.onclick = function(event) {
+    const menu = document.getElementById("dropdownMenu");
+    if(!event.target.matches('#usuarioLogadoNome') && !event.target.matches('#usuarioLogadoNome *')) {
+        if(menu.classList.contains('show')) {
+            menu.classList.remove('show');
+            document.getElementById("setaDropdown").classList.remove("girar");
+        }
+    }
+}
+
+// Função para o botão "Sair"
+function sair() {
+    localStorage.removeItem("usuarioLogado");
+    atualizarNomeUsuarioHeader();
+}
+
+// Atualiza contador do carrinho (opcional, se tiver carrinho)
+function atualizarContador() {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+    const contador = document.getElementById("contador");
+    let total = 0;
+    carrinho.forEach(p => total += p.qtd || 1);
+    contador.innerText = total > 9 ? "9+" : total;
+}
+
+// Executa ao carregar
+window.onload = function() {
+    atualizarNomeUsuarioHeader();
+    atualizarContador();
+};
+
+</script>
+
+</body>
+</html>

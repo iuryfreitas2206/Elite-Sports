@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Entrar - Elite Sports</title>
+
+<!-- Link para o CSS da página -->
+<link rel="stylesheet" href="style.css">
+
+<!-- Link para os ícones RemixIcon -->
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Cabeçalho da página -->
+<header class="topo">
+
+    <!-- Logo da loja, clicável para ir para a página inicial -->
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+        <img src="./img/logo.png" class="logo-img">
+        <span class="logo-text">Elite <strong>Sports</strong></span>
+    </div>
+
+    <!-- Área de ações do usuário -->
+    <div class="acoes">
+
+        <!-- Botão de voltar para a página anterior -->
+        <span onclick="history.back()">
+            <i class="ri-arrow-left-line"></i> Voltar
+        </span>
+
+        <!-- Botão para ir para a página inicial -->
+        <span onclick="window.location.href='index.html'">
+            <i class="ri-home-line"></i> Início
+        </span>
+
+        <!-- Área do usuário: mostra "Login" se não estiver logado ou nome do usuário quando logado -->
+        <div class="conta-dropdown">
+            <span id="usuarioLogadoNome" onclick="handleUsuarioClick()">
+                <i class="ri-user-line"></i> <span id="nomeUsuario">Login</span>
+                <i class="ri-arrow-down-s-line" id="setaDropdown" style="display:none"></i> <!-- seta para abrir o menu -->
+            </span>
+
+            <!-- Menu dropdown do usuário (minha conta, meus pedidos, sair) -->
+            <div id="dropdownMenu" class="dropdown-content">
+                <button onclick="mostrarMinhaConta()">Minha Conta</button>
+                <button onclick="mostrarMeusPedidos()">Meus Pedidos</button>
+                <button onclick="sair()">Sair da conta</button>
+            </div>
+        </div>
+
+        <!-- Carrinho de compras sempre por último -->
+        <div class="carrinho" onclick="window.location.href='carrinhos.html'">
+            <i class="ri-shopping-cart-line"></i>
+            <span id="contador">0</span> <!-- quantidade de itens no carrinho -->
+        </div>
+
+    </div>
+
+</header>
+
+<!-- Menu de navegação principal -->
+<nav class="menu">
+    <a href="index.html">Início</a>
+    <a href="camisetas.html">Camisetas</a>
+    <a href="shorts.html">Shorts</a>
+    <a href="selecoes.html">Copa do Mundo</a>
+</nav>
+
+<!-- Área de login e cadastro -->
+<section class="login-container">
+
+    <div class="login-card">
+
+        <!-- Botões para alternar entre login e cadastro -->
+        <div class="abas-login">
+            <button id="btnLogin" class="aba-ativa" onclick="mostrarLogin()">Entrar</button>
+            <button id="btnCadastro" onclick="mostrarCadastro()">Cadastrar</button>
+        </div>
+
+        <!-- Tela de login -->
+        <div id="boxLogin">
+            <h2>Entrar</h2>
+            <label>E-mail</label>
+            <input type="email" id="loginEmail" placeholder="Digite seu e-mail">
+            <label>Senha</label>
+            <div class="campo-senha">
+            <input type="password" id="loginSenha" placeholder="Digite sua senha">
+            <i class="ri-eye-line" onclick="mostrarOcultarSenha('loginSenha', this)"></i>
+            </div>
+            <button class="btn-principal" onclick="fazerLogin()">Entrar</button>
+            <button class="btn-laranja" onclick="mostrarRedefinirSenha()">Esqueci minha senha</button>
+        </div>
+
+        <!-- Tela para redefinir senha -->
+        <div class="redefinir-senha" id="boxRedefinirSenha" style="display:none;">
+            <h2>Redefinir Senha</h2>
+            
+            <!-- Etapa 1: verificar e-mail cadastrado -->
+            <div id="emailStep">
+                <label>E-mail cadastrado</label>
+                <input type="email" id="emailRedefinir" placeholder="Digite seu e-mail cadastrado">
+                <button onclick="verificarEmailRedefinir()">Confirmar</button>
+                <p id="mensagemRedefinir" style="color:red;"></p>
+            </div>
+
+            <!-- Etapa 2: trocar senha -->
+            <div id="senhaStep" style="display:none;">
+                <label>Nova senha</label>
+
+            <div class="campo-senha">
+                <input type="password" id="novaSenha" placeholder="Digite a nova senha">
+                <i class="ri-eye-line" onclick="mostrarOcultarSenha('novaSenha', this)"></i>
+            </div>
+
+                <label>Repita a senha</label>
+
+            <div class="campo-senha">
+               <input type="password" id="confirmarNovaSenha" placeholder="Repita a nova senha">
+               <i class="ri-eye-line" onclick="mostrarOcultarSenha('confirmarNovaSenha', this)"></i>
+            </div>
+
+                <button onclick="atualizarSenha()">Redefinir Senha</button>
+                <p id="mensagemNovaSenha" style="color:green;"></p>
+            </div>
+
+            <button onclick="voltarLogin()">Voltar para login</button>
+        </div>
+
+        <!-- Tela de cadastro -->
+        <div id="boxCadastro" style="display:none;">
+            <h2>Criar conta</h2>
+            <label>Nome</label>
+            <input type="text" id="cadastroNome" placeholder="Digite seu nome">
+            <label>E-mail</label>
+            <input type="email" id="cadastroEmail" placeholder="Digite seu e-mail">
+            <label>CPF</label>
+            <input type="text" id="cadastroCPF" placeholder="Digite seu CPF" maxlength="14" oninput="formatarCPF(this)">
+            <label>Senha</label>
+
+        <div class="campo-senha">
+            <input type="password" id="cadastroSenha" placeholder="Crie uma senha">
+            <i class="ri-eye-line" onclick="mostrarOcultarSenha('cadastroSenha', this)"></i>
+        </div>
+
+            <label>Confirmar senha</label>
+
+        <div class="campo-senha">
+            <input type="password" id="cadastroConfirmarSenha" placeholder="Repita a senha">
+            <i class="ri-eye-line" onclick="mostrarOcultarSenha('cadastroConfirmarSenha', this)"></i>
+        </div>
+
+            <button class="btn-principal" onclick="cadastrarUsuario()">Cadastrar</button>
+        </div>
+
+        <!-- Área para exibir mensagens de erro ou sucesso -->
+        <p id="mensagemLogin"></p>
+
+    </div>
+
+</section>
+
+<!-- Área "Minha Conta" -->
+<div id="minhaContaTela" class="minha-conta" style="display:none;">
+    <h2>Minha Conta</h2>
+    <label>Nome</label>
+    <input type="text" id="minhaContaNome" disabled>
+    <label>E-mail</label>
+    <input type="text" id="minhaContaEmail" disabled>
+    <label>CPF</label>
+    <input type="text" id="minhaContaCPF" disabled>
+    <label>Telefone</label>
+    <input type="text" id="minhaContaTelefone">
+    <button onclick="salvarMinhaConta()">Salvar</button>
+</div>
+
+<!-- Área "Meus Pedidos" -->
+<div id="meusPedidosTela" class="meus-pedidos" style="display:none;">
+    <h2>Meus Pedidos</h2>
+    <div id="listaPedidos"></div>
+</div>
+
+<!-- SCRIPT com funções de login, cadastro e validação -->
+<script>
+
+// Mostra mensagens de erro ou sucesso na tela de login/cadastro
+function mostrarMensagem(texto, cor) {
+    const mensagem = document.getElementById("mensagemLogin");
+    mensagem.innerText = texto;
+    mensagem.style.color = cor;
+}
+
+// Alterna a exibição do box de login
+function mostrarLogin() {
+    document.getElementById("boxLogin").style.display = "flex"; // mostra login
+    document.getElementById("boxCadastro").style.display = "none"; // esconde cadastro
+    document.getElementById("btnLogin").classList.add("aba-ativa"); // botão de login ativo
+    document.getElementById("btnCadastro").classList.remove("aba-ativa"); // botão de cadastro inativo
+    mostrarMensagem("", "black"); // limpa mensagens
+}
+
+// Alterna a exibição do box de cadastro
+function mostrarCadastro() {
+    document.getElementById("boxLogin").style.display = "none"; // esconde login
+    document.getElementById("boxCadastro").style.display = "flex"; // mostra cadastro
+    document.getElementById("btnCadastro").classList.add("aba-ativa"); // botão de cadastro ativo
+    document.getElementById("btnLogin").classList.remove("aba-ativa"); // botão de login inativo
+    mostrarMensagem("", "black"); // limpa mensagens
+}
+
+// Valida se o email digitado tem um formato básico correto
+function validarEmail(email) {
+    return email.includes("@") && email.includes(".");
+}
+
+// Valida CPF usando regras básicas de verificação
+function validarCPF(cpf) {
+    cpf = cpf.replace(/[^\d]+/g,''); // remove tudo que não seja número
+    if(cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false; // checa se todos os números são iguais
+
+    let soma = 0;
+    for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i)) * (10 - i); // cálculo do CPF
+    let resto = (soma * 10) % 11;
+    if (resto === 10) resto = 0;
+    if (resto !== parseInt(cpf.charAt(9))) return false;
+
+    soma = 0;
+    for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i)) * (11 - i);
+    resto = (soma * 10) % 11;
+    if (resto === 10) resto = 0;
+    if (resto !== parseInt(cpf.charAt(10))) return false;
+
+    return true;
+}
+
+// Função para cadastrar novo usuário
+function cadastrarUsuario() {
+    const nome = document.getElementById("cadastroNome").value.trim(); // pega valor do input e remove espaços
+    const email = document.getElementById("cadastroEmail").value.trim().toLowerCase();
+    const cpf = document.getElementById("cadastroCPF").value.trim();
+    const senha = document.getElementById("cadastroSenha").value.trim();
+    const confirmarSenha = document.getElementById("cadastroConfirmarSenha").value.trim();
+
+    // Valida se todos os campos foram preenchidos
+    if (nome === "" || email === "" || cpf === "" || senha === "" || confirmarSenha === "") {
+        mostrarMensagem("Preencha todos os campos.", "red");
+        return;
+    }
+
+    // Valida tamanho do nome
+    if (nome.length < 3) {
+        mostrarMensagem("O nome precisa ter pelo menos 3 caracteres.", "red");
+        return;
+    }
+
+    // Valida e-mail
+    if (!validarEmail(email)) {
+        mostrarMensagem("Digite um e-mail válido.", "red");
+        return;
+    }
+
+    // Valida CPF
+    if (!validarCPF(cpf)) {
+        mostrarMensagem("CPF inválido.", "red");
+        return;
+    }
+
+    // Valida tamanho da senha
+    if (senha.length < 6) {
+        mostrarMensagem("A senha precisa ter pelo menos 6 caracteres.", "red");
+        return;
+    }
+
+    // Valida se senha e confirmação conferem
+    if (senha !== confirmarSenha) {
+        mostrarMensagem("As senhas não conferem.", "red");
+        return;
+    }
+
+    // Pega lista de usuários salvos no localStorage ou cria um array vazio
+    let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+    // Verifica se email ou CPF já existe
+    const emailJaExiste = usuarios.some(usuario => usuario.email === email);
+    const cpfJaExiste = usuarios.some(usuario => usuario.cpf === cpf);
+
+    if (emailJaExiste) {
+        mostrarMensagem("Este e-mail já está cadastrado.", "red");
+        return;
+    }
+
+    if (cpfJaExiste) {
+        mostrarMensagem("Este CPF já está cadastrado.", "red");
+        return;
+    }
+
+    // Cria objeto do novo usuário
+    const novoUsuario = {
+        nome: nome,
+        email: email,
+        cpf: cpf,
+        senha: senha
+    };
+
+    // Adiciona usuário à lista e salva no localStorage
+    usuarios.push(novoUsuario);
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+// Cria o usuário logado automaticamente após o cadastro
+const usuarioLogado = {
+    nome: novoUsuario.nome,
+    email: novoUsuario.email,
+    cpf: novoUsuario.cpf,
+    telefone: novoUsuario.telefone || ""
+};
+
+// Salva o usuário como logado no localStorage
+localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
+
+// Mostra mensagem de sucesso
+mostrarMensagem("Cadastro realizado com sucesso!", "green");
+
+// Após 0,8 segundos, vai direto para a página inicial
+setTimeout(() => {
+    const voltarDepoisLogin = localStorage.getItem("voltarDepoisLogin");
+
+    if (voltarDepoisLogin) {
+        localStorage.removeItem("voltarDepoisLogin");
+        window.location.href = voltarDepoisLogin;
+    } else {
+        window.location.href = "index.html";
+    }
+}, 800);
+}
+
+function fazerLogin() {
+    const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+    const senha = document.getElementById("loginSenha").value.trim();
+
+    if (email === "" || senha === "") {
+        mostrarMensagem("Digite e-mail e senha.", "red");
+        return;
+    }
+
+    let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+    const usuarioEncontrado = usuarios.find(usuario =>
+        usuario.email === email && usuario.senha === senha
+    );
+
+    if (!usuarioEncontrado) {
+        mostrarMensagem("E-mail ou senha incorretos.", "red");
+        return;
+    }
+
+    const usuarioLogado = {
+        nome: usuarioEncontrado.nome,
+        email: usuarioEncontrado.email
+    };
+
+    localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
+    
+    // Atualiza o nome no header
+     atualizarNomeUsuarioHeader();
+
+    mostrarMensagem("Login realizado com sucesso!", "green");
+
+    setTimeout(() => {
+        window.location.href = "index.html";
+    }, 800);
+}
+
+function sair() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuario) {
+        alert("Nenhum usuário está logado.");
+        return;
+    }
+
+    // Remove do localStorage
+    localStorage.removeItem("usuarioLogado");
+
+    // Atualiza o header
+    atualizarNomeUsuarioHeader();
+
+    // Fecha dropdown, se estiver aberto
+    const menu = document.getElementById("dropdownMenu");
+    if(menu.classList.contains('show')) {
+        menu.classList.remove('show');
+    }
+
+    alert("Você saiu da conta.");
+}
+function atualizarContador() {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+    let total = 0;
+
+    carrinho.forEach(p => {
+        total += p.qtd || 1;
+    });
+
+    const contador = document.getElementById("contador");
+
+    if (total > 9) {
+        contador.innerText = "9+";
+    } else {
+        contador.innerText = total;
+    }
+}
+
+atualizarContador();
+
+function formatarCPF(campo) {
+    let cpf = campo.value.replace(/\D/g, ''); // remove tudo que não é número
+    if (cpf.length > 11) cpf = cpf.slice(0,11);
+
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+    campo.value = cpf;
+}
+
+// Mostrar tela Redefinir Senha
+function mostrarRedefinirSenha(){
+  document.getElementById("boxLogin").style.display="none";
+  document.getElementById("boxCadastro").style.display="none";
+  document.getElementById("boxRedefinirSenha").style.display="block";
+  document.getElementById("emailStep").style.display="block";
+  document.getElementById("senhaStep").style.display="none";
+  document.getElementById("mensagemRedefinir").innerText="";
+}
+
+// Verificar se e-mail existe
+function verificarEmailRedefinir(){
+  const email = document.getElementById("emailRedefinir").value.trim().toLowerCase();
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  const usuario = usuarios.find(u => u.email === email);
+  if(!usuario){
+    document.getElementById("mensagemRedefinir").innerText = "E-mail não cadastrado.";
+    return;
+  }
+  // E-mail existe → mostrar etapa de trocar senha
+  window.usuarioRedefinir = usuario;
+  document.getElementById("emailStep").style.display="none";
+  document.getElementById("senhaStep").style.display="block";
+}
+
+// Atualizar senha
+function atualizarSenha() {
+    const nova = document.getElementById("novaSenha").value.trim();
+    const repetir = document.getElementById("confirmarNovaSenha").value.trim();
+
+    if (nova.length < 6) {
+        document.getElementById("mensagemNovaSenha").style.color = "red";
+        document.getElementById("mensagemNovaSenha").innerText = "Senha deve ter pelo menos 6 caracteres.";
+        return;
+    }
+
+    if (nova !== repetir) {
+        document.getElementById("mensagemNovaSenha").style.color = "red";
+        document.getElementById("mensagemNovaSenha").innerText = "Senhas não conferem.";
+        return;
+    }
+
+    let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    const idx = usuarios.findIndex(u => u.email === window.usuarioRedefinir.email);
+    usuarios[idx].senha = nova;
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+    // Mensagem de sucesso
+    document.getElementById("mensagemNovaSenha").style.color = "green";
+    document.getElementById("mensagemNovaSenha").innerText = "Senha redefinida com sucesso!";
+
+    // Volta automaticamente para a tela de login após 1,5 segundos
+    setTimeout(() => {
+        voltarLogin();
+    }, 1500);
+} document.getElementById("mensagemNovaSenha").innerText="Senha redefinida com sucesso!";
+
+// Voltar para login
+function voltarLogin(){
+  document.getElementById("boxRedefinirSenha").style.display="none";
+  document.getElementById("boxLogin").style.display="flex";
+}
+
+// Mostrar tela Minha Conta
+function mostrarMinhaConta(){
+    document.getElementById("minhaContaTela").style.display="block";
+    document.getElementById("meusPedidosTela").style.display="none";
+    document.getElementById("boxLogin").style.display="none";
+    document.getElementById("boxCadastro").style.display="none";
+
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || {};
+    document.getElementById("minhaContaNome").value = usuario.nome || "";
+    document.getElementById("minhaContaEmail").value = usuario.email || "";
+    document.getElementById("minhaContaCPF").value = usuario.cpf || "";
+    document.getElementById("minhaContaTelefone").value = usuario.telefone || "";
+}
+
+// Salvar alterações da conta
+function salvarMinhaConta(){
+    let usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || {};
+    usuario.telefone = document.getElementById("minhaContaTelefone").value.trim();
+    localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+    alert("Dados da conta salvos com sucesso!");
+}
+
+// Mostrar tela Meus Pedidos
+function mostrarMeusPedidos(){
+    document.getElementById("meusPedidosTela").style.display="block";
+    document.getElementById("minhaContaTela").style.display="none";
+    document.getElementById("boxLogin").style.display="none";
+    document.getElementById("boxCadastro").style.display="none";
+
+    const lista = document.getElementById("listaPedidos");
+    lista.innerHTML = ""; // limpa antes
+    let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+    if(pedidos.length === 0){
+        lista.innerHTML = "<p>Você ainda não possui pedidos.</p>";
+    } else {
+        pedidos.forEach((p, i) => {
+            const div = document.createElement("div");
+            div.style.border = "1px solid #ccc";
+            div.style.padding = "10px";
+            div.style.marginBottom = "5px";
+            div.innerHTML = `<strong>Pedido #${i+1}</strong><br>Produto: ${p.produto}<br>Status: ${p.status}`;
+            lista.appendChild(div);
+        });
+    }
+}
+
+// Alterna o dropdown quando o usuário está logado
+function toggleDropdown() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.classList.toggle("show");
+
+    const seta = document.getElementById("setaDropdown");
+    if (menu.classList.contains("show")) {
+        seta.classList.add("girar"); // opcional: anima a seta
+    } else {
+        seta.classList.remove("girar");
+    }
+}
+
+// Fecha o dropdown ao clicar fora
+window.onclick = function(event) {
+    if (!event.target.matches('#usuarioLogadoNome') && !event.target.matches('#usuarioLogadoNome *')) {
+        const menu = document.getElementById("dropdownMenu");
+        if (menu.classList.contains('show')) {
+            menu.classList.remove('show');
+            document.getElementById("setaDropdown").classList.remove("girar");
+        }
+    }
+}
+
+// Lida com o clique no header do usuário
+function usuarioHeaderClick() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuario) {
+        // ninguém logado → redireciona para a página de login
+        window.location.href = "Entrar.html";
+        return;
+    }
+
+    // usuário logado → abre/fecha dropdown
+    toggleDropdown();
+}
+
+// Atualiza o header com o nome do usuário ou "Login"
+function atualizarNomeUsuarioHeader() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null;
+    const nomeEl = document.getElementById("nomeUsuario");
+    const seta = document.getElementById("setaDropdown");
+
+    if (usuario) {
+        nomeEl.innerText = usuario.nome;   // mostra nome real
+        seta.style.display = "inline";     // mostra seta
+    } else {
+        nomeEl.innerText = "Login";        // mostra padrão quando deslogado
+        seta.style.display = "none";       // esconde seta
+    }
+}
+
+// Inicializa o header e o contador ao carregar a página
+window.onload = function() {
+    atualizarNomeUsuarioHeader();
+    if (typeof atualizarContador === "function") atualizarContador();
+};
+
+// Mostra ou oculta a senha do campo escolhido
+function mostrarOcultarSenha(idCampo, icone) {
+    const campo = document.getElementById(idCampo);
+
+    if (campo.type === "password") {
+        campo.type = "text";
+        icone.classList.remove("ri-eye-line");
+        icone.classList.add("ri-eye-off-line");
+    } else {
+        campo.type = "password";
+        icone.classList.remove("ri-eye-off-line");
+        icone.classList.add("ri-eye-line");
+    }
+}
+
+</script>
+
+</body>
+</html>

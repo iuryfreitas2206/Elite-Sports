@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Carrinho</title>
+<link rel="stylesheet" href="style.css">
+
+<!-- Ícones da biblioteca RemixIcon -->
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<header class="topo">
+
+    <!-- LOGO: ao clicar volta para a página inicial -->
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+        <img src="./img/logo.png" class="logo-img">
+        <span class="logo-text">Elite <strong>Sports</strong></span>
+    </div>
+
+    <div class="acoes">
+        <!-- Botão voltar -->
+        <span onclick="history.back()">
+            <i class="ri-arrow-left-line"></i> Voltar
+        </span>
+
+        <!-- Botão início -->
+        <span onclick="window.location.href='index.html'">
+            <i class="ri-home-line"></i> Início
+        </span>
+
+        <!-- DROPDOWN DO USUÁRIO -->
+        <div class="conta-dropdown">
+            <!-- Área clicável do usuário -->
+            <span id="usuarioLogadoNome" onclick="handleUsuarioClick()">
+                <i class="ri-user-line"></i> <span id="nomeUsuario">Login</span>
+                <i class="ri-arrow-down-s-line" id="setaDropdown" style="display:none"></i>
+            </span>
+
+            <!-- Menu dropdown com opções -->
+        <div id="dropdownMenu" class="dropdown-content">
+            <button onclick="window.location.href='minha-conta.html'">Minha Conta</button>
+            <button onclick="window.location.href='meus-pedidos.html'">Meus Pedidos</button>
+            <button onclick="sair()">Sair da conta</button>
+        </div>
+        </div>
+
+        <!-- Ícone do carrinho sempre por último -->
+        <div class="carrinho" onclick="window.location.href='carrinhos.html'">
+            <i class="ri-shopping-cart-line"></i>
+            <span id="contador">0</span> <!-- quantidade de itens -->
+        </div>
+    </div>
+
+</header>
+
+<!-- CONTEÚDO PRINCIPAL DO CARRINHO -->
+<div class="produtos">
+
+    <h2>🛒 Meu Carrinho</h2>
+
+    <!-- Lista de produtos no carrinho -->
+    <div id="lista"></div>
+
+    <!-- Total do carrinho -->
+    <h3 class="total" id="total"></h3>
+
+    <!-- Botões para limpar ou finalizar -->
+    <div style="margin-top:15px; display:flex; gap:10px;">
+        <button class="btn-limpar" onclick="limparCarrinho()">
+            Limpar Carrinho
+        </button>
+
+        <button class="btn-principal" onclick="finalizarCompra()">
+            Finalizar Compra
+        </button>
+    </div>
+
+</div>
+
+<script>
+
+// Carrega carrinho do localStorage ou cria array vazio se não houver
+let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+// Pega os elementos HTML que vamos atualizar dinamicamente
+let lista = document.getElementById("lista");
+let totalEl = document.getElementById("total");
+let contadorEl = document.getElementById("contador");
+
+// Função para transformar preço em número (ex: "R$ 99,90" → 99.90)
+function parsePreco(preco) {
+    return Number(
+        preco
+            .replace("R$", "")   // remove "R$"
+            .replace(/\s/g, "")  // remove espaços
+            .replace(",", ".")   // troca vírgula por ponto
+    );
+}
+
+// Atualiza a tela do carrinho
+function atualizarCarrinho() {
+
+    lista.innerHTML = ""; // limpa a lista
+    let total = 0;        // total em dinheiro
+    let totalItens = 0;   // total de unidades
+
+    // Se o carrinho estiver vazio
+    if (carrinho.length === 0) {
+        lista.innerHTML = "<p>🛒 Seu carrinho está vazio</p>";
+        totalEl.innerText = "";
+        contadorEl.innerText = 0;
+
+        // Atualiza o localStorage para garantir sincronização
+        localStorage.setItem("carrinho", JSON.stringify(carrinho));
+        return; // sai da função
+    }
+
+    // Para cada produto do carrinho
+    carrinho.forEach((p, index) => {
+        let qtd = p.qtd || 1; // quantidade padrão 1
+
+        totalItens += qtd;
+        total += parsePreco(p.preco) * qtd;
+
+        // Monta o HTML de cada item
+        lista.innerHTML += `
+            <div class="item-carrinho">
+
+                <img src="${p.imagem}">
+
+                <div class="item-info">
+                    <h3>${p.nome}</h3>
+                    <p>${p.preco}</p>
+                    <small>Cor: ${p.cor} | Tamanho: ${p.tamanho}</small>
+                </div>
+
+                <div class="item-acoes">
+                    <button class="btn-qtd" onclick="diminuir(${index})">−</button>
+                    <span class="qtd">${qtd}</span>
+                    <button class="btn-qtd" onclick="aumentar(${index})">+</button>
+                </div>
+
+                <button class="btn-remover" onclick="remover(${index})">🗑️</button>
+
+            </div>
+        `;
+    });
+
+    // Atualiza total em dinheiro e contador no header
+    totalEl.innerText = "Total: R$ " + total.toFixed(2).replace(".", ",");
+    contadorEl.innerText = totalItens;
+
+    // Salva estado atualizado do carrinho
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+}
+
+// Aumenta quantidade de um item
+function aumentar(index) {
+    carrinho[index].qtd = (carrinho[index].qtd || 1) + 1;
+    atualizarCarrinho();
+}
+
+// Diminui quantidade de um item
+function diminuir(index) {
+    if ((carrinho[index].qtd || 1) > 1) {
+        carrinho[index].qtd--;
+    }
+    atualizarCarrinho();
+}
+
+// Remove um item do carrinho
+function remover(index) {
+    carrinho.splice(index, 1);
+    atualizarCarrinho();
+}
+
+// Limpa todo o carrinho
+function limparCarrinho() {
+    carrinho = [];
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    atualizarCarrinho();
+}
+
+// Finaliza compra (simples alert + limpa carrinho)
+function finalizarCompra() {
+    if (carrinho.length === 0) {
+        alert("Seu carrinho está vazio!");
+        return;
+    }
+
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null;
+
+    if (!usuario) {
+        alert("Você precisa fazer login para finalizar o pedido!");
+        localStorage.setItem("voltarDepoisLogin", "carrinhos.html");
+        window.location.href = "Entrar.html";
+        return;
+    }
+
+    let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+    const total = carrinho.reduce((soma, produto) => {
+        return soma + parsePreco(produto.preco) * (produto.qtd || 1);
+    }, 0);
+
+    const novoPedido = {
+        id: Date.now(),
+        usuarioEmail: usuario.email,
+        usuarioNome: usuario.nome,
+        data: new Date().toLocaleString("pt-BR"),
+        itens: [...carrinho],
+        total: total,
+        status: "Pedido realizado"
+    };
+
+    pedidos.push(novoPedido);
+    localStorage.setItem("pedidos", JSON.stringify(pedidos));
+
+    alert("Compra finalizada com sucesso!");
+
+    carrinho = [];
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+
+    atualizarCarrinho();
+
+    window.location.href = "meus-pedidos.html";
+}
+
+// Inicializa a tela ao carregar
+atualizarCarrinho();
+
+// Atualiza apenas contador do header (ícone do carrinho)
+function atualizarContador() {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+    const contador = document.getElementById("contador");
+    let total = 0;
+    carrinho.forEach(p => total += p.qtd || 1);
+    contador.innerText = total > 9 ? "9+" : total;
+}
+
+atualizarContador();
+
+// ================================
+// HEADER / LOGIN / DROPDOWN
+// ================================
+
+// Atualiza nome do usuário no header e exibe/esconde seta
+function atualizarNomeUsuarioHeader() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null;
+    const nomeEl = document.getElementById("nomeUsuario");
+    const seta = document.getElementById("setaDropdown");
+
+    if(usuario){
+        nomeEl.innerText = usuario.nome;   // se logado, mostra nome real
+        seta.style.display = "inline";     // mostra seta
+    } else {
+        nomeEl.innerText = "Login";        // se deslogado, mostra "Login"
+        seta.style.display = "none";       // esconde seta
+    }
+}
+
+// Decide ação ao clicar no usuário no header
+function handleUsuarioClick() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null;
+
+    if(usuario){
+        // usuário logado → abre dropdown
+        document.getElementById("dropdownMenu").classList.toggle("show");
+    } else {
+        // não logado → vai para página de login
+        window.location.href = "Entrar.html";
+    }
+}
+
+// Fecha dropdown se clicar fora
+window.onclick = function(event) {
+    const menu = document.getElementById("dropdownMenu");
+    if(!event.target.matches('#usuarioLogadoNome') && !event.target.matches('#usuarioLogadoNome *')) {
+        if(menu.classList.contains('show')) {
+            menu.classList.remove('show');
+            document.getElementById("setaDropdown").classList.remove("girar");
+        }
+    }
+}
+
+// Função para o botão "Sair"
+function sair() {
+    localStorage.removeItem("usuarioLogado"); // remove usuário logado
+    atualizarNomeUsuarioHeader();             // atualiza header para "Login" e esconde seta
+}
+
+// Executa funções ao carregar a página
+window.onload = function() {
+    atualizarNomeUsuarioHeader(); // atualiza nome do usuário no header
+    atualizarContador();          // atualiza contador do carrinho
+};
+
+</script>
+
+</body>
+</html>

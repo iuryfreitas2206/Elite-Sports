@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Produto</title>
+<link rel="stylesheet" href="style.css">
+
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="topo">
+
+    <!-- LOGO -->
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+        <img src="./img/logo.png" class="logo-img">
+        <span class="logo-text">Elite <strong>Sports</strong></span>
+    </div>
+
+    <div class="acoes">
+    <span onclick="history.back()">
+        <i class="ri-arrow-left-line"></i> Voltar
+    </span>
+
+    <span onclick="window.location.href='index.html'">
+        <i class="ri-home-line"></i> Início
+    </span>
+
+    <!-- Olá, Usuário com dropdown -->
+    <div class="conta-dropdown">
+    <span id="usuarioLogadoNome" onclick="handleUsuarioClick()">
+        <i class="ri-user-line"></i> <span id="nomeUsuario">Login</span>
+        <i class="ri-arrow-down-s-line" id="setaDropdown" style="display:none"></i>
+    </span>
+
+    <div id="dropdownMenu" class="dropdown-content">
+        <button onclick="mostrarMinhaConta()">Minha Conta</button>
+        <button onclick="mostrarMeusPedidos()">Meus Pedidos</button>
+        <button onclick="sair()">Sair da conta</button>
+    </div>
+</div>
+
+    <!-- Carrinho sempre por último -->
+    <div class="carrinho" onclick="window.location.href='carrinhos.html'">
+        <i class="ri-shopping-cart-line"></i>
+        <span id="contador">0</span>
+    </div>
+</div>
+
+</header>
+
+<div class="produto-container">
+
+    <!-- GALERIA -->
+    <div class="galeria">
+        <img id="imagem-principal">
+
+        <div class="miniaturas">
+            <img id="img1" onclick="trocarImagem(this)">
+            <img id="img2" onclick="trocarImagem(this)">
+            <img id="img3" onclick="trocarImagem(this)">
+        </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="info">
+
+        <h2 id="nome"></h2>
+
+        <p class="preco" id="preco"></p>
+
+        <!-- CORES -->
+       <div id="area-cores">
+    <h4>Cor:</h4>
+    <div class="cores">
+        <div class="cor azul" onclick="selecionarCor(this, 'azul')"></div>
+        <div class="cor branca" onclick="selecionarCor(this, 'branco')"></div>
+        <div class="cor preta" onclick="selecionarCor(this, 'preto')"></div>
+    </div>
+</div>
+
+        <!-- TAMANHOS -->
+        <div>
+            <h4>Tamanho:</h4>
+            <div class="tamanhos">
+                <button onclick="selecionarTamanho(this)">P</button>
+                <button onclick="selecionarTamanho(this)">M</button>
+                <button onclick="selecionarTamanho(this)">G</button>
+                <button onclick="selecionarTamanho(this)">GG</button>
+            </div>
+        </div>
+
+        <!-- BOTÕES -->
+       <div class="botoes-produto">
+    <button class="btn-secundario" onclick="adicionarCarrinho()">
+        Adicionar ao Carrinho
+    </button>
+
+    <button class="btn-principal" onclick="comprarAgora()">
+        Comprar
+    </button>
+</div>
+
+    </div>
+
+</div>
+
+<script>
+
+// VOLTAR
+function voltar() {
+    window.location.href = "index.html";
+}
+
+// PRODUTOS
+const produtos = {
+    1: {
+        nome: "Camiseta Dry Fit",
+        preco: "R$ 99,90",
+        imagens: {
+            azul: [
+                "./img/camiseta-dryfit/DryFit-azul-1.png",
+                "./img/camiseta-dryfit/DryFit-azul-2.png",
+                "./img/camiseta-dryfit/DryFit-azul-3.png"
+            ],
+            branco: [
+                "./img/camiseta-dryfit/DryFit-branca-1.png",
+                "./img/camiseta-dryfit/DryFit-branca-2.png",
+                "./img/camiseta-dryfit/DryFit-branca-3.png"
+            ],
+            preto: [
+                "./img/camiseta-dryfit/DryFit-preta-1.png",
+                "./img/camiseta-dryfit/DryFit-preta-2.png",
+                "./img/camiseta-dryfit/DryFit-preta-3.png"
+            ]
+        }
+    },
+
+    2: {
+        nome: "Short Esportivo",
+        preco: "R$ 79,90",
+        imagens: {
+            azul: [
+                "./img/short-esportivo/Short-azul-1.png",
+                "./img/short-esportivo/Short-azul-2.png",
+                "./img/short-esportivo/Short-azul-3.png"
+            ],
+            branco: [
+                "./img/short-esportivo/Short-branco-1.png",
+                "./img/short-esportivo/Short-branco-2.png",
+                "./img/short-esportivo/Short-branco-3.png"
+            ],
+            preto: [
+                "./img/short-esportivo/Short-preto-1.jpg",
+                "./img/short-esportivo/Short-preto-2.png",
+                "./img/short-esportivo/Short-preto-3.png"
+            ]
+        }
+    },
+
+    3: {
+        nome: "Camiseta Treino",
+        preco: "R$ 89,90",
+        imagens: {
+            azul: [
+                "./img/camiseta-treino/Camiseta treino-azul-3.png",
+                "./img/camiseta-treino/Camiseta treino-azul-2.png",
+                "./img/camiseta-treino/Camiseta treino-azul-1.png"
+            ],
+            branco: [
+                "./img/camiseta-treino/Camiseta treino-branca-1.png",
+                "./img/camiseta-treino/Camiseta treino-branca-2.png",
+                "./img/camiseta-treino/Camiseta treino-branca-3.png"
+            ],
+            preto: [
+                "./img/camiseta-treino/Camiseta treino-preta-1.png",
+                "./img/camiseta-treino/Camiseta treino-preta-2.png",
+                "./img/camiseta-treino/Camiseta treino-preta-3.png"
+            ]
+        }
+    },
+
+    4: {
+        nome: "Regata Fitness",
+        preco: "R$ 69,90",
+        imagens: {
+            azul: [
+                "./img/regata/Regata-Azul-1.png",
+                "./img/regata/Regata-Azul-2.png",
+                "./img/regata/Regata-Azul-3.png"
+            ],
+            branco: [
+                "./img/regata/Regata-Branca-1.png",
+                "./img/regata/Regata-Branca-2.png",
+                "./img/regata/Regata-Branca-3.png"
+            ],
+            preto: [
+                "./img/regata/Regata-Preta-1.jpg",
+                "./img/regata/Regata-Preta-2.png",
+                "./img/regata/Regata-Preta-3.png"
+            ]
+        }
+    },
+
+        101: {
+        nome: "Camisa Brasil",
+        preco: "R$ 129,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/brasil-1.png",
+                "./img/selecoes/brasil-2.png",
+                "./img/selecoes/brasil-3.png"
+            ]
+        }
+    },
+
+    201: {
+        nome: "Short Brasil",
+        preco: "R$ 89,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/short-brasil-1.png",
+                "./img/selecoes/short-brasil-2.png",
+                "./img/selecoes/short-brasil-3.png"
+            ]
+        }
+    },
+
+    102: {
+        nome: "Camisa França",
+        preco: "R$ 129,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/franca-1.png",
+                "./img/selecoes/franca-2.png",
+                "./img/selecoes/franca-3.png"
+            ]
+        }
+    },
+
+    202: {
+        nome: "Short França",
+        preco: "R$ 89,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/short-franca-1.png",
+                "./img/selecoes/short-franca-2.png",
+                "./img/selecoes/short-franca-3.png"
+            ]
+        }
+    },
+
+    103: {
+        nome: "Camisa Argentina",
+        preco: "R$ 129,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/argentina-1.png",
+                "./img/selecoes/argentina-2.png",
+                "./img/selecoes/argentina-3.png"
+            ]
+        }
+    },
+
+    203: {
+        nome: "Short Argentina",
+        preco: "R$ 89,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/short-argentina-1.png",
+                "./img/selecoes/short-argentina-2.png",
+                "./img/selecoes/short-argentina-3.png"
+            ]
+        }
+    },
+
+    104: {
+        nome: "Camisa Portugal",
+        preco: "R$ 129,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/portugal-1.png",
+                "./img/selecoes/portugal-2.png",
+                "./img/selecoes/portugal-3.png"
+            ]
+        }
+    },
+
+    204: {
+        nome: "Short Portugal",
+        preco: "R$ 89,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/short-portugal-1.png",
+                "./img/selecoes/short-portugal-2.png",
+                "./img/selecoes/short-portugal-3.png"
+            ]
+        }
+    },
+
+    105: {
+        nome: "Camisa Alemanha",
+        preco: "R$ 129,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/alemanha-1.png",
+                "./img/selecoes/alemanha-2.png",
+                "./img/selecoes/alemanha-3.png"
+            ]
+        }
+    },
+
+    205: {
+        nome: "Short Alemanha",
+        preco: "R$ 89,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/short-alemanha-1.png",
+                "./img/selecoes/short-alemanha-2.png",
+                "./img/selecoes/short-alemanha-3.png"
+            ]
+        }
+    },
+
+    106: {
+        nome: "Camisa Espanha",
+        preco: "R$ 129,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/espanha-1.png",
+                "./img/selecoes/espanha-2.png",
+                "./img/selecoes/espanha-3.png"
+            ]
+        }
+    },
+
+    206: {
+        nome: "Short Espanha",
+        preco: "R$ 89,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/short-espanha-1.png",
+                "./img/selecoes/short-espanha-2.png",
+                "./img/selecoes/short-espanha-3.png"
+            ]
+        }
+    },
+
+    107: {
+        nome: "Camisa Inglaterra",
+        preco: "R$ 129,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/inglaterra-1.png",
+                "./img/selecoes/inglaterra-2.png",
+                "./img/selecoes/inglaterra-3.png"
+            ]
+        }
+    },
+
+    207: {
+        nome: "Short Inglaterra",
+        preco: "R$ 89,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/short-inglaterra-1.png",
+                "./img/selecoes/short-inglaterra-2.png",
+                "./img/selecoes/short-inglaterra-3.png"
+            ]
+        }
+    },
+
+    108: {
+        nome: "Camisa Bélgica",
+        preco: "R$ 129,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/belgica-1.png",
+                "./img/selecoes/belgica-2.png",
+                "./img/selecoes/belgica-3.png"
+            ]
+        }
+    },
+
+    208: {
+        nome: "Short Bélgica",
+        preco: "R$ 89,90",
+        imagens: {
+            principal: [
+                "./img/selecoes/short-belgica-1.png",
+                "./img/selecoes/short-belgica-2.png",
+                "./img/selecoes/short-belgica-3.png"
+            ]
+        }
+    }
+};
+
+// PEGAR ID
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+if (!id || !produtos[id]) {
+    alert("Produto não encontrado!");
+    window.location.href = "index.html";
+}
+
+const produto = produtos[id];
+
+// FALLBACK
+let corSelecionada = params.get("cor") || "azul";
+let tamanhoSelecionado = "";
+
+// PREENCHER
+document.getElementById("nome").innerText = produto.nome;
+document.getElementById("preco").innerText = produto.preco;
+
+if (produto.imagens.principal) {
+    document.getElementById("area-cores").style.display = "none";
+}
+
+carregarImagens(corSelecionada);
+marcarCorInicial(corSelecionada);
+
+function carregarImagens(cor) {
+    const lista = produto.imagens[cor] || produto.imagens.principal;
+
+    document.getElementById("imagem-principal").src = lista[0];
+
+    document.getElementById("img1").src = lista[0];
+    document.getElementById("img2").src = lista[1];
+    document.getElementById("img3").src = lista[2];
+}
+
+// TROCAR IMAGEM
+function trocarImagem(img) {
+    document.getElementById("imagem-principal").src = img.src;
+}
+
+// TAMANHO
+function selecionarTamanho(botao) {
+    let botoes = document.querySelectorAll(".tamanhos button");
+
+    botoes.forEach(b => {
+        b.style.background = "#0b0b0e";
+        b.style.color = "white";
+    });
+
+    botao.style.background = "#6a00ff";
+    botao.style.color = "white";
+
+    tamanhoSelecionado = botao.innerText;
+}
+
+// COR
+function selecionarCor(elemento, cor) {
+    let cores = document.querySelectorAll(".cor");
+
+    cores.forEach(c => c.style.border = "2px solid #ddd");
+
+    elemento.style.border = "2px solid #6a00ff";
+
+    corSelecionada = cor;
+
+    carregarImagens(cor);
+}
+
+// 🛒 ADICIONAR AO CARRINHO
+function adicionarCarrinho() {
+    if (tamanhoSelecionado === "") {
+        alert("Selecione um tamanho antes de adicionar ao carrinho!");
+        return false;
+    }
+
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    let existente = carrinho.find(p =>
+        p.id === id &&
+        p.cor === corSelecionada &&
+        p.tamanho === tamanhoSelecionado
+    );
+
+    if (existente) {
+        existente.qtd = (existente.qtd || 1) + 1;
+    } else {
+        carrinho.push({
+            id: id,
+            nome: produto.nome,
+            preco: produto.preco,
+            cor: corSelecionada,
+            tamanho: tamanhoSelecionado,
+            imagem: produto.imagens[corSelecionada][0],
+            qtd: 1
+        });
+    }
+
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+
+    atualizarContador();
+
+    alert("Produto adicionado ao carrinho!");
+
+    return true;
+}
+
+// 💳 COMPRAR
+function comprarAgora() {
+    const adicionado = adicionarCarrinho();
+
+    if (adicionado) {
+        window.location.href = "carrinhos.html";
+    }
+}
+
+
+function atualizarContador() {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    let total = 0;
+
+    carrinho.forEach(p => {
+        total += p.qtd || 1;
+    });
+
+    const contador = document.getElementById("contador");
+
+    if (total > 9) {
+        contador.innerText = "9+";
+    } else {
+        contador.innerText = total;
+    }
+}
+
+atualizarContador();
+
+
+function marcarCorInicial(cor) {
+    const bolinha = document.querySelector("." + cor);
+
+    if (bolinha) {
+        bolinha.style.border = "2px solid #6a00ff";
+    }
+}
+
+
+
+// Atualiza o header
+function atualizarNomeUsuarioHeader() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null;
+    const nomeEl = document.getElementById("nomeUsuario");
+    const seta = document.getElementById("setaDropdown");
+
+    if(usuario){
+        nomeEl.innerText = usuario.nome;
+        seta.style.display = "inline";
+    } else {
+        nomeEl.innerText = "Login";
+        seta.style.display = "none";
+    }
+}
+
+// Decide o que fazer ao clicar no usuário
+function handleUsuarioClick() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null;
+
+    if(usuario){
+        document.getElementById("dropdownMenu").classList.toggle("show");
+    } else {
+        window.location.href = "Entrar.html"; // leva para login
+    }
+}
+
+// Fecha dropdown clicando fora
+window.onclick = function(event) {
+    const menu = document.getElementById("dropdownMenu");
+    if(!event.target.matches('#usuarioLogadoNome') && !event.target.matches('#usuarioLogadoNome *')) {
+        if(menu.classList.contains('show')) {
+            menu.classList.remove('show');
+            document.getElementById("setaDropdown").classList.remove("girar");
+        }
+    }
+}
+
+// Função para o botão "Sair"
+function sair() {
+    localStorage.removeItem("usuarioLogado");
+    atualizarNomeUsuarioHeader();
+}
+
+// Atualiza contador do carrinho (opcional, se tiver carrinho)
+function atualizarContador() {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+    const contador = document.getElementById("contador");
+    let total = 0;
+    carrinho.forEach(p => total += p.qtd || 1);
+    contador.innerText = total > 9 ? "9+" : total;
+}
+
+// Executa ao carregar
+window.onload = function() {
+    atualizarNomeUsuarioHeader();
+    atualizarContador();
+};
+
+</script>
+
+</body>
+</html>

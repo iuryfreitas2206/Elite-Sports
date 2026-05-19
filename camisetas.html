@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Camisetas - Elite Sports</title>
+<link rel="stylesheet" href="style.css">
+
+<!-- Importa os ícones RemixIcon para usar ícones bonitinhos no site -->
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="topo">
+
+    <!-- LOGO: clicando leva para a página inicial -->
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+        <img src="./img/logo.png" class="logo-img">
+        <span class="logo-text">Elite <strong>Sports</strong></span>
+    </div>
+
+    <!-- ÁREA DE AÇÕES: Voltar, Home, Usuário e Carrinho -->
+    <div class="acoes">
+        <!-- Botão voltar para a página anterior -->
+        <span onclick="history.back()">
+            <i class="ri-arrow-left-line"></i> Voltar
+        </span>
+
+        <!-- Botão home que leva para a página inicial -->
+        <span onclick="window.location.href='index.html'">
+            <i class="ri-home-line"></i> Início
+        </span>
+
+        <!-- ===================== DROPDOWN DO USUÁRIO ===================== -->
+        <div class="conta-dropdown">
+            <!-- Mostra "Login" se ninguém logado ou o nome do usuário -->
+            <span id="usuarioLogadoNome" onclick="handleUsuarioClick()">
+                <i class="ri-user-line"></i> <span id="nomeUsuario">Login</span>
+                <i class="ri-arrow-down-s-line" id="setaDropdown" style="display:none"></i>
+            </span>
+
+            <!-- Conteúdo que aparece quando clicamos no usuário logado -->
+            <div id="dropdownMenu" class="dropdown-content">
+                <button onclick="mostrarMinhaConta()">Minha Conta</button>
+                <button onclick="mostrarMeusPedidos()">Meus Pedidos</button>
+                <button onclick="sair()">Sair da conta</button>
+            </div>
+        </div>
+
+        <!-- CARRINHO: sempre por último -->
+        <div class="carrinho" onclick="window.location.href='carrinhos.html'">
+            <i class="ri-shopping-cart-line"></i> <!-- Ícone do carrinho -->
+            <span id="contador">0</span> <!-- Mostra quantos produtos no carrinho -->
+        </div>
+    </div>
+
+</header>
+
+<!-- ===================== MENU ===================== -->
+<nav class="menu">
+    <a href="index.html">Início</a>
+    <a href="camisetas.html" class="ativo">Camisetas</a> <!-- Página atual marcada -->
+    <a href="shorts.html">Shorts</a>
+    <a href="selecoes.html">Copa do Mundo</a>
+</nav>
+
+<!-- ===================== PRODUTOS ===================== -->
+<section class="produtos">
+
+    <h2>Camisetas</h2>
+
+    <div class="grid">
+
+        <!-- Cada card representa um produto -->
+        <div class="card" onclick="abrirProduto(1, 'azul')">
+            <img src="./img/camiseta-dryfit/DryFit-azul-1.png"> <!-- Imagem do produto -->
+            <h3>Camiseta Dry Fit</h3> <!-- Nome do produto -->
+            <p>R$ 99,90</p> <!-- Preço -->
+            <!-- Botão comprar, impede que clique no card abra o produto duas vezes -->
+            <button onclick="event.stopPropagation(); abrirProduto(1, 'azul')">Comprar</button>
+        </div>
+
+        <div class="card" onclick="abrirProduto(3, 'preto')">
+            <img src="./img/camiseta-treino/Camiseta treino-preta-1.png">
+            <h3>Camiseta Treino</h3>
+            <p>R$ 89,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(3, 'preto')">Comprar</button>
+        </div>
+
+        <div class="card" onclick="abrirProduto(4, 'preto')">
+            <img src="./img/regata/Regata-Preta-1.jpg">
+            <h3>Regata Fitness</h3>
+            <p>R$ 69,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(4, 'preto')">Comprar</button>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+/* ------------------------------------------------
+Função abrirProduto
+Recebe o id do produto e a cor
+Redireciona para a página do produto
+------------------------------------------------ */
+function abrirProduto(id, cor) {
+    window.location.href = "produto.html?id=" + id + "&cor=" + cor;
+}
+
+/* ------------------------------------------------
+Função atualizarContador
+Mostra no header quantos itens tem no carrinho
+Se passar de 9 mostra "9+"
+------------------------------------------------ */
+function atualizarContador() {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || []; // pega o carrinho do navegador
+    let total = 0;
+
+    carrinho.forEach(p => {
+        total += p.qtd || 1; // adiciona quantidade de cada item
+    });
+
+    const contador = document.getElementById("contador");
+
+    if (total > 9) {
+        contador.innerText = "9+";
+    } else {
+        contador.innerText = total;
+    }
+}
+
+atualizarContador(); // chama função assim que carrega a página
+
+/* ------------------------------------------------
+Função atualizarNomeUsuarioHeader
+Mostra "Login" se ninguém estiver logado
+Mostra o nome do usuário se estiver logado
+Também controla a seta do dropdown
+------------------------------------------------ */
+function atualizarNomeUsuarioHeader() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null; // pega info do usuário
+    const nomeEl = document.getElementById("nomeUsuario");
+    const seta = document.getElementById("setaDropdown");
+
+    if(usuario){
+        nomeEl.innerText = usuario.nome;   // mostra o nome real
+        seta.style.display = "inline";     // mostra a seta do dropdown
+    } else {
+        nomeEl.innerText = "Login";        // padrão quando deslogado
+        seta.style.display = "none";       // esconde seta
+    }
+}
+
+/* ------------------------------------------------
+Função handleUsuarioClick
+Verifica se usuário está logado
+Se sim, abre/fecha dropdown
+Se não, envia para página de login
+------------------------------------------------ */
+function handleUsuarioClick() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null;
+
+    if(usuario){
+        // Alterna dropdown
+        document.getElementById("dropdownMenu").classList.toggle("show");
+    } else {
+        // Redireciona para login
+        window.location.href = "Entrar.html";
+    }
+}
+
+/* ------------------------------------------------
+Fecha dropdown se clicar fora dele
+------------------------------------------------ */
+window.onclick = function(event) {
+    const menu = document.getElementById("dropdownMenu");
+    if(!event.target.matches('#usuarioLogadoNome') && !event.target.matches('#usuarioLogadoNome *')) {
+        if(menu.classList.contains('show')) {
+            menu.classList.remove('show');
+            document.getElementById("setaDropdown").classList.remove("girar");
+        }
+    }
+}
+
+/* ------------------------------------------------
+Função de logout
+Remove usuário do localStorage
+Atualiza o header para voltar a "Login"
+Fecha dropdown se estiver aberto
+------------------------------------------------ */
+function sair() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuario) {
+        alert("Nenhum usuário está logado."); // alerta se ninguém logado
+        return;
+    }
+
+    // Remove usuário do armazenamento
+    localStorage.removeItem("usuarioLogado");
+    atualizarNomeUsuarioHeader(); // volta a mostrar "Login" e esconde seta
+
+    // Fecha dropdown
+    const menu = document.getElementById("dropdownMenu");
+    if(menu.classList.contains('show')) {
+        menu.classList.remove('show');
+    }
+
+    alert("Você saiu da conta."); // alerta de confirmação
+}
+
+/* ------------------------------------------------
+Ao carregar a página:
+- Atualiza nome do usuário
+- Atualiza contador do carrinho
+------------------------------------------------ */
+window.onload = function() {
+    atualizarNomeUsuarioHeader();
+};
+</script>
+
+</body>
+</html>

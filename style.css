@@ -1,0 +1,1313 @@
+/* Estilo geral do corpo da página */
+body {
+    margin: 0; /* remove a margem padrão do navegador */
+    font-family: Arial, sans-serif; /* define a fonte principal do site */
+    background: #f5f5f7; /* define a cor de fundo da página */
+}
+
+/* Cabeçalho principal do site */
+.topo {
+    background: #0b0b0e; /* cor de fundo escura do cabeçalho */
+    color: white; /* cor do texto no cabeçalho */
+    display: flex; /* coloca os elementos lado a lado */
+    align-items: center; /* centraliza os itens verticalmente */
+    justify-content: space-between; /* separa logo, busca e ações */
+    padding: 15px 40px; /* espaçamento interno do cabeçalho */
+}
+
+/* Área da logo */
+.logo {
+    display: flex; /* coloca imagem e texto lado a lado */
+    align-items: center; /* centraliza a logo verticalmente */
+    gap: 8px; /* espaço entre imagem e texto */
+    font-size: 20px; /* tamanho do texto da logo */
+    font-weight: bold; /* deixa o texto em negrito */
+}
+
+/* Ícone ou destaque da logo */
+.logo-icon {
+    color: #7b2cff; /* cor roxa do ícone */
+    font-weight: bold; /* deixa em negrito */
+}
+
+/* Destaque roxo no texto da logo */
+.logo-text strong {
+    color: #7b2cff;
+}
+
+/* Imagem da logo */
+.logo-img {
+    width: 28px; /* largura da imagem */
+    height: 28px; /* altura da imagem */
+    object-fit: contain; /* mantém a imagem proporcional */
+}
+
+/* Barra de pesquisa */
+.busca {
+    background: #1c1c22; /* fundo escuro da barra de busca */
+    border-radius: 25px; /* deixa a barra arredondada */
+    padding: 8px 15px; /* espaçamento interno */
+    display: flex; /* coloca ícone e input lado a lado */
+    align-items: center; /* centraliza verticalmente */
+    width: 40%; /* largura da barra de busca */
+}
+
+/* Campo de texto da busca */
+.busca input {
+    border: none; /* remove a borda padrão */
+    background: transparent; /* deixa o fundo transparente */
+    color: white; /* cor do texto digitado */
+    outline: none; /* remove a borda ao clicar */
+    width: 100%; /* ocupa todo o espaço disponível */
+}
+
+/* Ícone da busca */
+.busca i {
+    margin-right: 8px; /* espaço entre o ícone e o input */
+    color: #aaa; /* cor cinza do ícone */
+}
+
+/* Área de ações do cabeçalho */
+.acoes {
+    display: flex; /* coloca os itens lado a lado */
+    align-items: center; /* centraliza verticalmente */
+    gap: 20px; /* espaço entre os itens */
+}
+
+/* Botões/textos de ação */
+.acoes span {
+    display: flex; /* alinha ícone e texto */
+    align-items: center; /* centraliza verticalmente */
+    gap: 5px; /* espaço entre ícone e texto */
+    cursor: pointer; /* mostra que é clicável */
+}
+
+/* Menu de navegação */
+.menu {
+    background: #111114; /* fundo escuro do menu */
+    display: flex; /* coloca os links lado a lado */
+    justify-content: center; /* centraliza os links */
+    gap: 40px; /* espaço entre os links */
+    border-bottom: 1px solid #222; /* linha inferior do menu */
+}
+
+/* Links do menu */
+.menu a {
+    color: #aaa; /* cor padrão dos links */
+    padding: 15px 0; /* espaçamento vertical */
+    text-decoration: none; /* remove sublinhado */
+    position: relative; /* permite criar linha embaixo do ativo */
+    font-weight: 500; /* peso da fonte */
+}
+
+/* Efeito ao passar o mouse no menu */
+.menu a:hover {
+    color: white; /* deixa o link branco ao passar o mouse */
+}
+
+/* Link ativo do menu */
+.menu .ativo {
+    color: white; /* cor do link ativo */
+}
+
+/* Linha roxa abaixo do link ativo */
+.menu .ativo::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* ocupa toda a largura do link */
+    height: 2px; /* altura da linha */
+    background: #7b2cff; /* cor roxa da linha */
+}
+
+/* Banner principal com carrossel */
+.banner {
+    position: relative; /* permite posicionar slides e setas dentro dele */
+    width: 100%; /* ocupa toda a largura */
+    min-height: calc(100vh - 108px); /* altura mínima descontando cabeçalho e menu */
+    overflow: hidden; /* esconde partes que passam do banner */
+    color: white; /* cor do texto */
+    background: #000; /* fundo preto */
+}
+
+/* Slides do carrossel */
+.slide-banner {
+    position: absolute; /* coloca todos os slides no mesmo lugar */
+    inset: 0; /* ocupa todo o espaço do banner */
+
+    opacity: 0; /* começa invisível */
+    visibility: hidden; /* esconde o slide */
+
+    background-size: cover; /* imagem cobre todo o espaço */
+    background-position: right center; /* posiciona a imagem à direita */
+    background-repeat: no-repeat; /* não repete a imagem */
+
+    display: flex; /* organiza o conteúdo */
+    flex-direction: column; /* deixa conteúdo em coluna */
+    justify-content: flex-end; /* joga o conteúdo para baixo */
+
+    padding-left: 60px; /* espaço à esquerda */
+    padding-bottom: 60px; /* espaço inferior */
+    box-sizing: border-box; /* mantém padding dentro do tamanho total */
+
+    transition: opacity 0.8s ease, visibility 0.8s ease; /* anima a troca de slides */
+}
+
+/* Slide ativo do banner */
+.slide-banner.ativo {
+    opacity: 1; /* deixa visível */
+    visibility: visible; /* mostra o slide */
+}
+
+/* Camada escura sobre a imagem do banner */
+.slide-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(0,0,0,0.9) 0%,
+        rgba(0,0,0,0.55) 35%,
+        rgba(0,0,0,0.1) 100%
+    ); /* escurece a imagem para melhorar leitura do texto */
+}
+
+/* Conteúdo escrito do banner */
+.conteudo-banner {
+    position: relative; /* fica acima da camada escura */
+    z-index: 2; /* garante que o texto apareça por cima */
+}
+
+/* Setas do carrossel */
+.seta-banner {
+    position: absolute; /* posiciona as setas dentro do banner */
+    top: 50%; /* coloca no meio vertical */
+    transform: translateY(-50%); /* ajusta centralização */
+
+    z-index: 5; /* deixa as setas acima dos slides */
+
+    width: 48px;
+    height: 48px;
+    min-width: auto;
+
+    border-radius: 50%; /* deixa circular */
+    border: none; /* remove borda */
+
+    background: rgba(0,0,0,0.45); /* fundo preto transparente */
+    color: white; /* cor da seta */
+
+    font-size: 28px; /* tamanho da seta */
+    cursor: pointer; /* mostra que é clicável */
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Efeito ao passar o mouse nas setas */
+.seta-banner:hover {
+    background: #7b2cff; /* muda para roxo */
+}
+
+/* Seta esquerda */
+.seta-banner.anterior {
+    left: 20px;
+}
+
+/* Seta direita */
+.seta-banner.proxima {
+    right: 20px;
+}
+
+/* Texto pequeno acima do título do banner */
+.tag {
+    font-size: 14px;
+    letter-spacing: 2px; /* aumenta espaço entre letras */
+    color: #aaa;
+}
+
+/* Título do banner */
+.banner h2 {
+    font-size: 45px;
+    margin: 10px 0;
+}
+
+/* Parte destacada do título */
+.banner h2 span {
+    color: #7b2cff;
+}
+
+/* Parágrafo do banner */
+.banner p {
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+/* Botão roxo do banner */
+.btn-banner {
+    background: linear-gradient(45deg, #7b2cff, #a855f7); /* fundo em degradê */
+    border: none;
+    padding: 14px 22px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    width: fit-content; /* largura conforme o conteúdo */
+    transition: 0.2s; /* animação suave */
+}
+
+/* Efeito ao passar o mouse no botão do banner */
+.btn-banner:hover {
+    transform: scale(1.05); /* aumenta um pouco o botão */
+}
+
+/* Área de produtos */
+.produtos {
+    padding: 40px; /* espaçamento interno */
+}
+
+/* Título da área de produtos */
+.produtos h2 {
+    margin-bottom: 20px;
+}
+
+/* Grade de produtos */
+.grid {
+    display: flex; /* coloca cards lado a lado */
+    gap: 25px; /* espaço entre os cards */
+    justify-content: center; /* centraliza os produtos */
+    flex-wrap: wrap; /* quebra linha se faltar espaço */
+}
+
+/* Card de produto */
+.card {
+    background: white;
+    width: 240px;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* sombra do card */
+    transition: 0.3s; /* animação suave */
+}
+
+/* Efeito ao passar o mouse no card */
+.card:hover {
+    transform: translateY(-10px); /* sobe o card */
+}
+
+/* Imagem do produto */
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain; /* mantém proporção da imagem */
+    background: #f5f5f7;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Preço do produto */
+.card p {
+    color: #7b2cff;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Estilo padrão dos botões */
+button {
+    background: #0b0b0e;
+    color: white;
+
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+
+    cursor: pointer;
+    font-weight: bold;
+    min-width: 130px;
+
+    transition: 0.2s;
+}
+
+/* Efeito ao passar o mouse nos botões */
+button:hover {
+    background: #7b2cff;
+}
+
+/* Ícone do carrinho */
+.carrinho {
+    position: relative; /* permite posicionar o contador em cima */
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+}
+
+/* Tamanho do ícone do carrinho */
+.carrinho i {
+    font-size: 20px;
+}
+
+/* Contador do carrinho */
+#contador {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+
+    background: #7b2cff;
+    color: white;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    width: 16px;
+    height: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%; /* deixa em formato de bolinha */
+}
+
+/* ========================= */
+/* Página de produto */
+/* ========================= */
+
+/* Container principal da página de produto */
+.produto-container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 40px;
+
+    max-width: 1100px;
+    margin: auto; /* centraliza o conteúdo */
+}
+
+/* Área da galeria de imagens */
+.galeria {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Imagem principal do produto */
+.galeria img {
+    width: 100%;
+    max-width: 380px;
+    height: 380px; /* mantém as imagens do mesmo tamanho */
+    object-fit: contain; /* mantém proporção */
+    border-radius: 10px;
+}
+
+/* Área das miniaturas */
+.miniaturas {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Imagens pequenas da galeria */
+.miniaturas img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+/* Área de informações do produto */
+.info {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Preço na página de produto */
+.preco {
+    font-size: 26px;
+    color: #7b2cff;
+    font-weight: bold;
+}
+
+/* Área dos botões de tamanho */
+.tamanhos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Botões de tamanho */
+.tamanhos button {
+    background: #0b0b0e;
+    color: white;
+
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+
+    font-weight: bold;
+    min-width: 60px;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Efeito ao passar o mouse nos tamanhos */
+.tamanhos button:hover {
+    background: #7b2cff;
+}
+
+/* Área das cores do produto */
+.cores {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+/* Bolinhas de cor */
+.cor {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* deixa circular */
+    cursor: pointer;
+    border: 2px solid #ddd;
+}
+
+/* Cor azul */
+.azul {
+    background: blue;
+}
+
+/* Cor branca */
+.branca {
+    background: white;
+    border: 2px solid #ccc; /* borda para aparecer no fundo branco */
+}
+
+/* Cor preta */
+.preta {
+    background: black;
+}
+
+/* ========================= */
+/* Carrinho */
+/* ========================= */
+
+/* Item dentro do carrinho */
+.item-carrinho {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* Imagem do item no carrinho */
+.item-carrinho img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #f5f5f5;
+    padding: 5px;
+}
+
+/* Informações do item do carrinho */
+.item-info {
+    flex: 1; /* ocupa o espaço disponível */
+}
+
+/* Nome do item no carrinho */
+.item-info h3 {
+    margin: 0;
+}
+
+/* Preço do item no carrinho */
+.item-info p {
+    color: #7b2cff;
+    font-weight: bold;
+}
+
+/* Área dos botões de quantidade e remover */
+.item-acoes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Botões de aumentar e diminuir quantidade */
+.btn-qtd {
+    background: #ddd;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Efeito nos botões de quantidade */
+.btn-qtd:hover {
+    background: #bbb;
+}
+
+/* Efeito ao passar o mouse no botão remover */
+.btn-remover:hover {
+    background: #333;
+}
+
+/* Botão de remover item */
+.btn-remover {
+    background: #0b0b0e;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Total do carrinho */
+.total {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* Botão de limpar carrinho */
+.btn-limpar {
+    background: #999;
+}
+
+/* Efeito ao passar o mouse no botão limpar */
+.btn-limpar:hover {
+    background: #666;
+}
+
+/* Grade dos produtos de seleções */
+.selecoes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 280px); /* cria 4 colunas */
+    column-gap: 35px;
+    row-gap: 40px;
+    justify-content: center;
+}
+
+/* Card dentro da grade de seleções */
+.selecoes-grid .card {
+    width: 240px;
+}
+
+/* ========================= */
+/* Login e cadastro */
+/* ========================= */
+
+/* Container da tela de login/cadastro */
+.login-container {
+    min-height: calc(100vh - 140px); /* ocupa a altura da tela descontando cabeçalho */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    background: #f5f5f7;
+}
+
+/* Card branco do login/cadastro */
+.login-card {
+    background: white;
+    width: 420px;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.10);
+}
+
+/* Abas de login e cadastro */
+.abas-login {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* divide em duas colunas */
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+/* Botões das abas */
+.abas-login button {
+    width: 100%;
+    min-width: auto;
+    padding: 14px;
+    border-radius: 10px;
+    background: #e5e5e5;
+    color: #111;
+    font-weight: bold;
+}
+
+/* Efeito ao passar o mouse nas abas */
+.abas-login button:hover {
+    background: #d6d6d6;
+}
+
+/* Aba que está ativa */
+.abas-login .aba-ativa {
+    background: linear-gradient(45deg, #7b2cff, #a855f7);
+    color: white;
+}
+
+/* Formulários de login e cadastro */
+#boxLogin,
+#boxCadastro {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Cadastro começa escondido */
+#boxCadastro {
+    display: none;
+}
+
+/* Título do card de login */
+.login-card h2 {
+    text-align: center;
+    font-size: 30px;
+    margin: 5px 0 20px;
+}
+
+/* Labels dos campos */
+.login-card label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #111;
+}
+
+/* Campos de input do login/cadastro */
+.login-card input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    font-size: 15px;
+    background: #fafafa;
+}
+
+/* Efeito quando o usuário clica no input */
+.login-card input:focus {
+    border-color: #7b2cff;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(123, 44, 255, 0.12);
+}
+
+/* Botão principal do login/cadastro */
+.login-card .btn-principal {
+    width: 100%;
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #0b0b0e;
+}
+
+/* Efeito no botão principal */
+.login-card .btn-principal:hover {
+    background: #7b2cff;
+}
+
+/* Botão de limpar dentro do login */
+.login-card .btn-limpar {
+    width: 100%;
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #999;
+}
+
+/* Efeito no botão limpar */
+.login-card .btn-limpar:hover {
+    background: #666;
+}
+
+/* Mensagem de erro ou sucesso do login/cadastro */
+#mensagemLogin {
+    text-align: center;
+    font-weight: bold;
+    min-height: 20px;
+    margin-top: 15px;
+}
+
+/* ========================= */
+/* Responsivo do banner */
+/* ========================= */
+
+/* Ajustes para telas médias */
+@media (max-width: 900px) {
+    .topo {
+        padding: 15px 20px;
+        gap: 15px;
+    }
+
+    .busca {
+        width: 50%;
+    }
+
+    .menu {
+        gap: 25px;
+    }
+
+    .slide-banner {
+        padding-left: 35px;
+        padding-right: 35px;
+        padding-bottom: 50px;
+        background-position: center;
+    }
+
+    .banner h2 {
+        font-size: 48px;
+    }
+}
+
+/* Ajustes para telas pequenas */
+@media (max-width: 600px) {
+    .topo {
+        flex-direction: column; /* empilha os itens do cabeçalho */
+        align-items: stretch;
+        padding: 15px;
+    }
+
+    .logo {
+        justify-content: center; /* centraliza a logo */
+    }
+
+    .busca {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .acoes {
+        justify-content: center;
+    }
+
+    .menu {
+        overflow-x: auto; /* permite rolar o menu na horizontal */
+        justify-content: flex-start;
+        padding: 0 15px;
+        gap: 25px;
+    }
+
+    .menu a {
+        white-space: nowrap; /* impede quebrar os textos do menu */
+    }
+
+    .banner {
+        min-height: calc(100vh - 210px);
+    }
+
+    .slide-banner {
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-bottom: 45px;
+        background-position: center;
+    }
+
+    .banner h2 {
+        font-size: 38px;
+    }
+
+    .banner p {
+        font-size: 15px;
+    }
+
+    .seta-banner {
+        width: 38px;
+        height: 38px;
+        font-size: 22px;
+    }
+
+    .seta-banner.anterior {
+        left: 10px;
+    }
+
+    .seta-banner.proxima {
+        right: 10px;
+    }
+}
+
+/* Card da tela de redefinir senha */
+.redefinir-senha {
+    max-width: 400px;
+    margin: 20px auto; /* centraliza horizontalmente */
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column; /* deixa input e botões empilhados */
+    align-items: center; /* centraliza horizontalmente */
+}
+
+/* Inputs da tela de redefinir senha */
+.redefinir-senha input {
+    width: 90%; /* deixa o input mais largo e centralizado */
+    margin-bottom: 10px;
+}
+
+/* Botões da tela de redefinir senha */
+.redefinir-senha button {
+    width: 90%; /* deixa os botões do mesmo tamanho dos inputs */
+    margin-bottom: 10px;
+}
+
+/* Container do dropdown da conta */
+.conta-dropdown {
+    position: relative; /* permite posicionar o menu dropdown */
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Menu dropdown da conta */
+.dropdown-content {
+    display: none; /* começa escondido */
+    position: absolute;
+    right: 0;
+    background-color: #1a1a1a; /* fundo escuro */
+    min-width: 200px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+    z-index: 100; /* fica acima dos outros elementos */
+    border-radius: 8px;
+    padding: 10px 0;
+}
+
+/* Botões dentro do dropdown */
+.dropdown-content button {
+    width: 100%;
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    color: white;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Efeito ao passar o mouse nos botões do dropdown */
+.dropdown-content button:hover {
+    background-color: #2a2a2a;
+}
+
+/* Classe usada para mostrar o dropdown */
+.show {
+    display: block;
+}
+
+/* Classe usada para girar a seta do dropdown */
+.girar {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+/* ========================= */
+/* TELAS MINHA CONTA / PEDIDOS */
+/* ========================= */
+
+/* Container geral das telas da conta */
+.painel-conta {
+    min-height: 100vh;
+    background: #f8f8fb;
+    color: #111827;
+}
+
+/* Topo da área da conta */
+.painel-topo {
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+}
+
+/* Nome do usuário no topo */
+.painel-usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+
+/* Ícone do usuário no topo */
+.painel-usuario i {
+    font-size: 24px;
+}
+
+/* Layout com menu lateral e conteúdo */
+.painel-layout {
+    display: flex;
+    min-height: calc(100vh - 70px);
+}
+
+/* Menu lateral */
+.painel-menu {
+    width: 260px;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    padding: 30px 25px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Links do menu lateral */
+.menu-conta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #111827;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+/* Ícones do menu lateral */
+.menu-conta i {
+    font-size: 22px;
+}
+
+/* Link ativo do menu lateral */
+.menu-conta.ativo {
+    background: #f1e8ff;
+    color: #7b2cff;
+}
+
+/* Botão de sair da conta */
+.btn-sair-conta {
+    margin-top: auto;
+    background: transparent;
+    color: #111827;
+    border-top: 1px solid #e5e7eb;
+    border-radius: 0;
+    padding: 25px 10px 0;
+    min-width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    font-size: 15px;
+}
+
+/* Efeito no botão sair */
+.btn-sair-conta:hover {
+    background: transparent;
+    color: #7b2cff;
+}
+
+/* Conteúdo principal */
+.painel-conteudo {
+    flex: 1;
+    padding: 50px 45px;
+}
+
+/* Cabeçalho do conteúdo */
+.painel-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+/* Título da tela */
+.painel-cabecalho h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+/* Subtítulo da tela */
+.painel-cabecalho p {
+    margin: 8px 0 0;
+    color: #475569;
+}
+
+/* Botão editar dados */
+.btn-editar {
+    background: white;
+    color: #7b2cff;
+    border: 2px solid #7b2cff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Efeito no botão editar */
+.btn-editar:hover {
+    background: #7b2cff;
+    color: white;
+}
+
+/* Card dos dados do usuário */
+.dados-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+}
+
+/* Linha de informação do perfil */
+.linha-dado {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Remove borda da última linha */
+.linha-dado:last-child {
+    border-bottom: none;
+}
+
+/* Ícone dos dados */
+.icone-dado {
+    width: 56px;
+    height: 56px;
+    background: #f1e8ff;
+    color: #7b2cff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tamanho do ícone */
+.icone-dado i {
+    font-size: 26px;
+}
+
+/* Título do campo */
+.linha-dado strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Inputs da tela de perfil */
+.linha-dado input {
+    border: none;
+    background: transparent;
+    font-size: 17px;
+    color: #111827;
+    outline: none;
+    width: 300px;
+}
+
+/* Input liberado para edição */
+.linha-dado input:not(:disabled) {
+    border-bottom: 1px solid #7b2cff;
+}
+
+/* Botão salvar dados */
+.btn-salvar-dados {
+    margin-top: 25px;
+    background: #7b2cff;
+}
+
+/* Card dos pedidos */
+.pedidos-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+}
+
+/* Linha de cada pedido */
+.linha-pedido {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 25px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Remove borda do último pedido */
+.linha-pedido:last-child {
+    border-bottom: none;
+}
+
+/* Imagem do pedido */
+.linha-pedido img {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+    background: #f5f5f7;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+/* Informações do pedido */
+.pedido-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Nome/número do pedido */
+.pedido-info strong {
+    font-size: 16px;
+}
+
+/* Produto do pedido */
+.pedido-info span {
+    font-size: 15px;
+}
+
+/* Data do pedido */
+.pedido-info small {
+    color: #475569;
+}
+
+/* Status do pedido */
+.status-pedido {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Status entregue */
+.status-pedido.entregue {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+/* Status em trânsito */
+.status-pedido.transito {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+/* Status processando */
+.status-pedido.processando {
+    background: #ffedd5;
+    color: #ea580c;
+}
+
+/* Seta do pedido */
+.seta-pedido {
+    font-size: 28px;
+}
+
+/* Mensagem quando não existem pedidos */
+.pedido-vazio {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+/* Ícone da tela vazia */
+.pedido-vazio i {
+    font-size: 50px;
+    color: #7b2cff;
+}
+
+/* Responsivo das telas de conta */
+@media (max-width: 800px) {
+    .painel-layout {
+        flex-direction: column;
+    }
+
+    .painel-menu {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .painel-conteudo {
+        padding: 30px 20px;
+    }
+
+    .painel-cabecalho {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .linha-pedido {
+        flex-wrap: wrap;
+    }
+
+    .linha-dado input {
+        width: 100%;
+    }
+}
+
+/* Botões de voltar e início no topo das telas da conta */
+.painel-acoes-topo {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Estilo dos botões do topo */
+.painel-acoes-topo span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #0b0b0e;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Tamanho dos ícones */
+.painel-acoes-topo i {
+    font-size: 20px;
+}
+
+/* Efeito ao passar o mouse */
+.painel-acoes-topo span:hover {
+    color: #7b2cff;
+}
+
+/* Campo de senha com ícone de olho */
+.campo-senha {
+    position: relative;
+    width: 100%;
+}
+
+/* Input dentro do campo de senha */
+.campo-senha input {
+    width: 100%;
+    padding-right: 45px;
+}
+
+/* Ícone do olho */
+.campo-senha i {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #555;
+    font-size: 20px;
+}
+
+/* Efeito ao passar o mouse no olho */
+.campo-senha i:hover {
+    color: #7b2cff;
+}

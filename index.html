@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Elite Sports</title>
+
+<!-- Link para o CSS da página -->
+<link rel="stylesheet" href="style.css">
+
+<!-- Link para os ícones RemixIcon -->
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Cabeçalho da página -->
+<header class="topo">
+
+    <!-- Logo da loja -->
+    <div class="logo">
+        <img src="./img/logo.png" class="logo-img">
+        <span class="logo-text">Elite <strong>Sports</strong></span>
+    </div>
+
+    <!-- Área de ações do usuário -->
+    <div class="acoes">
+
+        <!-- Área do usuário: mostra "Login" se não estiver logado ou o nome do usuário quando logado -->
+        <div class="conta-dropdown">
+            <span id="usuarioLogadoNome" onclick="handleUsuarioClick()">
+                <i class="ri-user-line"></i> <span id="nomeUsuario">Login</span>
+                <i class="ri-arrow-down-s-line" id="setaDropdown" style="display:none"></i> <!-- seta para abrir o menu -->
+            </span>
+
+            <!-- Menu dropdown do usuário -->
+           <div id="dropdownMenu" class="dropdown-content">
+           <button onclick="window.location.href='minha-conta.html'">Minha Conta</button>
+           <button onclick="window.location.href='meus-pedidos.html'">Meus Pedidos</button>
+           <button onclick="sair()">Sair da conta</button>
+          </div>
+         </div>
+
+        <!-- Carrinho de compras sempre por último -->
+        <div class="carrinho" onclick="window.location.href='carrinhos.html'">
+            <i class="ri-shopping-cart-line"></i>
+            <span id="contador">0</span> <!-- quantidade de itens no carrinho -->
+        </div>
+
+    </div>
+
+</header>
+
+<!-- Menu de navegação principal -->
+<nav class="menu">
+    <a href="index.html" class="ativo">Início</a>
+    <a href="camisetas.html">Camisetas</a>
+    <a href="shorts.html">Shorts</a>
+    <a href="selecoes.html">Copa do Mundo</a>
+</nav>
+
+<!-- Banner principal com carrossel -->
+<section class="banner">
+
+    <!-- Primeiro slide do banner -->
+    <div class="slide-banner ativo" style="background-image: url('./img/banner1.png');">
+        <div class="conteudo-banner">
+            <span class="tag">NOVA COLEÇÃO</span>
+            <h2><span>ESPORTIVA</span></h2>
+            <p>Peças leves, confortáveis e respiráveis para acompanhar seu ritmo em qualquer treino.</p>
+
+            <!-- Botão que leva para a página de camisetas -->
+            <button class="btn-banner" onclick="window.location.href='camisetas.html'">
+                Ver Camisetas →
+            </button>
+        </div>
+    </div>
+
+    <!-- Segundo slide do banner -->
+    <div class="slide-banner" style="background-image: url('./img/banner2.jpg');">
+        <div class="conteudo-banner">
+            <span class="tag">LANÇAMENTOS</span>
+            <h2><span>O MUNDO DO FUTEBOL</span></h2>
+            <p>Vista as cores da sua seleção com estilo, tradição e paixão pelo futebol.</p>
+
+            <!-- Botão que leva para a página de seleções -->
+            <button class="btn-banner" onclick="window.location.href='selecoes.html'">
+                Ver camisetas →
+            </button>
+        </div>
+    </div>
+
+    <!-- Botões para trocar os slides do banner -->
+    <button class="seta-banner anterior" onclick="voltarSlide()">&#10094;</button>
+    <button class="seta-banner proxima" onclick="avancarSlide()">&#10095;</button>
+
+</section>
+
+<!-- Área de produtos em destaque -->
+<section class="produtos">
+
+    <h2>Destaques</h2>
+
+    <!-- Grade de produtos -->
+    <div class="grid">
+
+        <!-- Produto 1 -->
+        <div class="card" onclick="abrirProduto(1, 'azul')">
+            <img src="./img/camiseta-dryfit/DryFit-azul-1.png">
+            <h3>Camiseta Dry Fit</h3>
+            <p>R$ 99,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(1, 'azul')">Comprar</button>
+        </div>
+
+        <!-- Produto 2 -->
+        <div class="card" onclick="abrirProduto(2, 'preto')">
+            <img src="./img/short-esportivo/short-preto-1.jpg">
+            <h3>Short Esportivo</h3>
+            <p>R$ 79,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(2, 'preto')">Comprar</button>
+        </div>
+
+        <!-- Produto 3 -->
+        <div class="card" onclick="abrirProduto(3, 'preto')">
+            <img src="./img/camiseta-treino/Camiseta treino-preta-1.png">
+            <h3>Camiseta Treino</h3>
+            <p>R$ 89,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(3, 'preto')">Comprar</button>
+        </div>
+
+        <!-- Produto 4 -->
+        <div class="card" onclick="abrirProduto(4, 'preto')">
+            <img src="./img/regata/Regata-Preta-1.jpg">
+            <h3>Regata Fitness</h3>
+            <p>R$ 69,90</p>
+            <button onclick="event.stopPropagation(); abrirProduto(4, 'preto')">Comprar</button>
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+// Função para atualizar o contador de itens do carrinho
+function atualizarContador() {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || []; // pega os itens do carrinho ou cria um array vazio
+
+    let total = 0; // variável que guarda a quantidade total de itens
+
+    // Soma a quantidade de cada produto no carrinho
+    carrinho.forEach(p => {
+        total += p.qtd || 1;
+    });
+
+    const contador = document.getElementById("contador"); // pega o elemento do contador no HTML
+
+    // Se tiver mais de 9 itens, mostra "9+"
+    if (total > 9) {
+        contador.innerText = "9+";
+    } else {
+        contador.innerText = total; // mostra a quantidade total de itens
+    }
+}
+
+// Chama a função para atualizar o contador ao carregar a página
+atualizarContador();
+
+// Função para abrir a página de detalhes do produto
+function abrirProduto(id, cor = "azul") {
+    window.location.href = "produto.html?id=" + id + "&cor=" + cor; // envia o id e a cor do produto pela URL
+}
+
+// Função para abrir a página do carrinho
+function abrirCarrinho() {
+    window.location.href = "carrinhos.html";
+}
+
+// Atualiza o cabeçalho com o nome do usuário ou com "Login"
+function atualizarNomeUsuarioHeader() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null; // pega o usuário logado
+    const nomeEl = document.getElementById("nomeUsuario"); // pega o elemento do nome do usuário
+    const seta = document.getElementById("setaDropdown"); // pega a seta do dropdown
+
+    // Se tiver usuário logado, mostra o nome e a seta
+    if(usuario){
+        nomeEl.innerText = usuario.nome;
+        seta.style.display = "inline";
+    } else {
+        // Se não tiver usuário logado, mostra "Login" e esconde a seta
+        nomeEl.innerText = "Login";
+        seta.style.display = "none";
+    }
+}
+
+// Decide o que fazer ao clicar no usuário do cabeçalho
+function handleUsuarioClick() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || null; // pega o usuário logado
+
+    // Se tiver usuário logado, abre ou fecha o menu dropdown
+    if(usuario){
+        document.getElementById("dropdownMenu").classList.toggle("show");
+    } else {
+        // Se não tiver usuário logado, leva para a página de login
+        window.location.href = "Entrar.html";
+    }
+}
+
+// Fecha o dropdown ao clicar fora dele
+window.onclick = function(event) {
+    const menu = document.getElementById("dropdownMenu"); // pega o menu dropdown
+
+    // Verifica se o clique não foi no nome do usuário nem nos elementos dentro dele
+    if(!event.target.matches('#usuarioLogadoNome') && !event.target.matches('#usuarioLogadoNome *')) {
+
+        // Se o menu estiver aberto, fecha o dropdown e remove a animação da seta
+        if(menu.classList.contains('show')) {
+            menu.classList.remove('show');
+            document.getElementById("setaDropdown").classList.remove("girar");
+        }
+    }
+}
+
+// Função para sair da conta
+function sair() {
+    localStorage.removeItem("usuarioLogado"); // remove o usuário logado do localStorage
+    atualizarNomeUsuarioHeader(); // atualiza o cabeçalho depois de sair da conta
+}
+
+// Função para atualizar o contador do carrinho
+function atualizarContador() {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || []; // pega os itens do carrinho ou cria um array vazio
+    const contador = document.getElementById("contador"); // pega o contador no HTML
+    let total = 0; // variável que guarda o total de itens
+
+    // Soma a quantidade de cada produto no carrinho
+    carrinho.forEach(p => total += p.qtd || 1);
+
+    // Mostra "9+" se tiver mais de 9 itens, senão mostra o total
+    contador.innerText = total > 9 ? "9+" : total;
+}
+
+// Executa funções ao carregar a página
+window.onload = function() {
+    atualizarNomeUsuarioHeader(); // atualiza o nome do usuário no cabeçalho
+    atualizarContador(); // atualiza o contador do carrinho
+};
+
+// Variável que guarda o slide atual do banner
+let slideAtual = 0;
+
+// Pega todos os slides do banner
+const slidesBanner = document.querySelectorAll(".slide-banner");
+
+// Mostra o slide de acordo com o índice recebido
+function mostrarSlide(index) {
+    // Remove a classe ativo de todos os slides
+    slidesBanner.forEach(slide => {
+        slide.classList.remove("ativo");
+    });
+
+    // Adiciona a classe ativo no slide escolhido
+    slidesBanner[index].classList.add("ativo");
+}
+
+// Avança para o próximo slide do banner
+function avancarSlide() {
+    slideAtual++;
+
+    // Se passar do último slide, volta para o primeiro
+    if (slideAtual >= slidesBanner.length) {
+        slideAtual = 0;
+    }
+
+    mostrarSlide(slideAtual); // mostra o slide atual
+}
+
+// Volta para o slide anterior do banner
+function voltarSlide() {
+    slideAtual--;
+
+    // Se estiver antes do primeiro slide, vai para o último
+    if (slideAtual < 0) {
+        slideAtual = slidesBanner.length - 1;
+    }
+
+    mostrarSlide(slideAtual); // mostra o slide atual
+}
+
+// Troca automaticamente o slide do banner a cada 8 segundos
+setInterval(avancarSlide, 8000);
+
+</script>
+</body>
+</html>

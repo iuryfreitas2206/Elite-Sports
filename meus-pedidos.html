@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Meus Pedidos - Elite Sports</title>
+
+<!-- Link para o CSS da página -->
+<link rel="stylesheet" href="style.css">
+
+<!-- Link para os ícones RemixIcon -->
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Container geral da área da conta -->
+<div class="painel-conta">
+
+    <!-- Cabeçalho superior com nome do usuário -->
+<header class="painel-topo">
+    <div class="painel-usuario">
+        <i class="ri-user-line"></i>
+        <strong id="nomeTopo">Usuário</strong>
+    </div>
+
+    <!-- Botões de navegação no topo -->
+    <div class="painel-acoes-topo">
+        <span onclick="history.back()">
+            <i class="ri-arrow-left-line"></i> Voltar
+        </span>
+
+        <span onclick="window.location.href='index.html'">
+            <i class="ri-home-line"></i> Início
+        </span>
+    </div>
+</header>
+
+    <!-- Conteúdo principal -->
+    <div class="painel-layout">
+
+        <!-- Menu lateral -->
+        <aside class="painel-menu">
+
+            <!-- Link para Minha Conta -->
+            <a href="minha-conta.html" class="menu-conta">
+                <i class="ri-user-line"></i>
+                Minha conta
+            </a>
+
+            <!-- Link ativo para Meus Pedidos -->
+            <a href="meus-pedidos.html" class="menu-conta ativo">
+                <i class="ri-shopping-bag-line"></i>
+                Meus pedidos
+            </a>
+
+            <!-- Botão de sair da conta -->
+            <button class="btn-sair-conta" onclick="sairConta()">
+                <i class="ri-logout-box-line"></i>
+                Sair da conta
+            </button>
+
+        </aside>
+
+        <!-- Área principal da tela -->
+        <main class="painel-conteudo">
+
+            <div class="painel-cabecalho">
+                <div>
+                    <h1>Meus pedidos</h1>
+                    <p>Acompanhe seus pedidos realizados.</p>
+                </div>
+            </div>
+
+            <!-- Lista onde os pedidos aparecem -->
+            <section class="pedidos-card" id="listaPedidos"></section>
+
+        </main>
+
+    </div>
+
+</div>
+
+<script>
+
+// Carrega os dados do usuário logado
+function carregarUsuario() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    // Se não tiver usuário logado, volta para a tela de login
+    if (!usuario) {
+        window.location.href = "Entrar.html";
+        return;
+    }
+
+    // Mostra o nome do usuário no topo
+    document.getElementById("nomeTopo").innerText = usuario.nome || "Usuário";
+}
+
+// Carrega os pedidos salvos no localStorage
+function carregarPedidos() {
+    const lista = document.getElementById("listaPedidos");
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+    const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+    lista.innerHTML = "";
+
+    const pedidosDoUsuario = pedidos.filter(pedido => {
+        return pedido.usuarioEmail === usuario.email;
+    });
+
+    if (pedidosDoUsuario.length === 0) {
+        lista.innerHTML = `
+            <div class="pedido-vazio">
+                <i class="ri-shopping-bag-line"></i>
+                <h3>Você ainda não possui pedidos.</h3>
+                <p>Quando você finalizar uma compra, ela aparecerá aqui.</p>
+                <button onclick="window.location.href='index.html'">Ver produtos</button>
+            </div>
+        `;
+        return;
+    }
+
+    pedidosDoUsuario.forEach((pedido, index) => {
+        const div = document.createElement("div");
+        div.className = "linha-pedido";
+
+        let itensHTML = "";
+
+        pedido.itens.forEach(item => {
+            itensHTML += `
+                <div class="item-pedido" style="display:flex; align-items:center; gap:12px; margin-top:10px;">
+                    <img src="${item.imagem}" style="width:70px; height:70px; object-fit:cover; border-radius:8px;">
+
+                    <div class="pedido-info">
+                        <strong>${item.nome}</strong>
+                        <span>${item.preco}</span>
+                        <small>Cor: ${item.cor} | Tamanho: ${item.tamanho} | Quantidade: ${item.qtd || 1}</small>
+                    </div>
+                </div>
+            `;
+        });
+
+        div.innerHTML = `
+            <div style="width:100%;">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:15px;">
+                    <div class="pedido-info">
+                        <strong>Pedido #${index + 1}</strong>
+                        <small>Realizado em ${pedido.data}</small>
+                        <small>Total: R$ ${pedido.total.toFixed(2).replace(".", ",")}</small>
+                    </div>
+
+                    <span class="status-pedido ${classeStatus(pedido.status)}">
+                        ${pedido.status || "Processando"}
+                    </span>
+                </div>
+
+                <div style="margin-top:10px;">
+                    ${itensHTML}
+                </div>
+            </div>
+        `;
+
+        lista.appendChild(div);
+    });
+}
+
+// Define a classe do status do pedido
+function classeStatus(status) {
+    if (!status) return "processando";
+
+    const texto = status.toLowerCase();
+
+    if (texto.includes("entregue")) return "entregue";
+    if (texto.includes("trânsito") || texto.includes("transito")) return "transito";
+
+    return "processando";
+}
+
+// Sai da conta e volta para a página inicial
+function sairConta() {
+    localStorage.removeItem("usuarioLogado");
+    window.location.href = "index.html";
+}
+
+// Executa funções ao carregar a página
+carregarUsuario();
+carregarPedidos();
+
+</script>
+
+</body>
+</html>
