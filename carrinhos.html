@@ -66,6 +66,7 @@
 
     <!-- Total do carrinho -->
     <h3 class="total" id="total"></h3>
+    <div id="mensagemCompra" class="mensagem-compra"></div>
 
     <!-- Botões para limpar ou finalizar -->
     <div style="margin-top:15px; display:flex; gap:10px;">
@@ -219,14 +220,18 @@ function finalizarCompra() {
     pedidos.push(novoPedido);
     localStorage.setItem("pedidos", JSON.stringify(pedidos));
 
-    alert("Compra finalizada com sucesso!");
+    const mensagemCompra = document.getElementById("mensagemCompra");
+          mensagemCompra.innerText = "Compra finalizada com sucesso!";
+        mensagemCompra.style.display = "block";
 
-    carrinho = [];
-    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+     carrinho = [];
+         localStorage.setItem("carrinho", JSON.stringify(carrinho));
 
     atualizarCarrinho();
 
-    window.location.href = "meus-pedidos.html";
+     setTimeout(() => {
+     window.location.href = "meus-pedidos.html";
+     }, 1500);
 }
 
 // Inicializa a tela ao carregar

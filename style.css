@@ -1311,3 +1311,14 @@ button:hover {
 .campo-senha i:hover {
     color: #7b2cff;
 }
+
+.mensagem-compra {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #d4edda;
+    color: #155724;
+    font-weight: bold;
+    text-align: center;
+}
